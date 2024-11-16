@@ -1,13 +1,25 @@
-<h1>signup below</h1>
-<form method="POST" action="register">
+<h2>Register</h2>
+<form method="POST">
     {% csrf_token %}
-    <p>username</p>
-    <input type="text" name="username" />
-    <p>email</p>
-    <input type="email" name="email" />
-    <p>password</p>
-    <input type="password" name="password" />
-    <p>repeat youre password</p>
-    <input type="password" name="password2" />
-    <input type="submit" />
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" value="{{ username }}" required>
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" value="{{ email }}" required>
+
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+
+    <label for="password2">Confirm Password</label>
+    <input type="password" name="password2" id="password2" required>
+
+    <button type="submit">Register</button>
 </form>
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
