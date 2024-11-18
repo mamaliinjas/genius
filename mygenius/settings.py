@@ -26,7 +26,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp'
+    'myapp',
+    'django.contrib.sites',       
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+]
+
+SITE_ID=1
+
+
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend', 
+    'django.contrib.auth.backends.ModelBackend', 
+    
 ]
 
 MIDDLEWARE = [
@@ -37,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'mygenius.urls'
