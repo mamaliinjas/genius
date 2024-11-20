@@ -1,7 +1,8 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth.models import  User
 from django.contrib import messages
 from django.contrib.auth import login as auth_login , authenticate
+from .models import Artist , Song , Track , Album
 
 # Create your views here.
 
@@ -60,4 +61,26 @@ def login(request):
             messages.info(request, 'Invalid email/username or password')
             return redirect('login') 
     return render(request, 'login.html') 
-                
+   
+
+def artist_profile(request, artist_id):
+    artist = get_object_or_404(Artist, id=artist_id)
+    albums = artist.albums.all()
+    songs = artist.songs.all()    
+    return render(request, 'artist_profile.html', {'artist': artist, 'albums': albums, 'songs': songs})
+
+
+def album_details(request, album_id):
+    album = get_object_or_404(Album, id=album_id)
+    tracks = album.tracks.all()  
+    return render(request, 'album_details.html', {'album': album, 'tracks': tracks})
+
+
+def song_details(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    return render(request, 'song_details.html', {'song': song})
+
+
+def track_details(request, track_id):
+    track = get_object_or_404(Track, id=track_id)
+    return render(request, 'track_details.html', {'track': track})             
