@@ -2,16 +2,18 @@ from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth.models import  User
 from django.contrib import messages
 from django.contrib.auth import login as auth_login , authenticate
-from .models import Artist , Song , Track , Album
+from .models import Artist , Song , Album
+from django.db.models import Q
 
 # Create your views here.
 
 def home(request):
+    query=request.GET.get('q' , '')
+    artists=[]
+    songs=[]
+    albums=[]
+    lyrics=[]
     return render(request , 'home.html')
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.models import User
 
 def register(request):
     if request.method == 'POST':
@@ -72,8 +74,8 @@ def artist_profile(request, artist_id):
 
 def album_details(request, album_id):
     album = get_object_or_404(Album, id=album_id)
-    tracks = album.tracks.all()  
-    return render(request, 'album_details.html', {'album': album, 'tracks': tracks})
+    songs_in_album = album.songs.all()  
+    return render(request, 'album_details.html', {'album': album, 'songs_in_album': songs_in_album})
 
 
 def song_details(request, song_id):
@@ -81,6 +83,4 @@ def song_details(request, song_id):
     return render(request, 'song_details.html', {'song': song})
 
 
-def track_details(request, track_id):
-    track = get_object_or_404(Track, id=track_id)
-    return render(request, 'track_details.html', {'track': track})             
+            
