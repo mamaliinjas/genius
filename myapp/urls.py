@@ -12,7 +12,7 @@ urlpatterns=[
     path('artist/<int:artist_id>/' , views.artist_profile , name='artist_profile'),
     path('album/<int:album_id>/' , views.album_details , name='album_details'),
     path('song/<int:song_id>/' , views.song_details , name='song_details'),
-    path('search/' , views.search , name='search')
+    path('ajax_search/' , views.ajax_search , name='ajax_search')
     
 ]
 if settings.DEBUG:

@@ -4,32 +4,43 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login , authenticate
 from .models import Artist , Song , Album
 from django.db.models import Q
+from django.http import JsonResponse
 
 # Create your views here.
 def home(request):
     return render(request , 'home.html')
 
-def search(request):
-    query=request.GET.get('q' , '')
-    artists=[]
-    songs=[]
-    albums=[]
-    lyrics_results=[]
-    
-    if query:
-        artists=Artist.objects.filter(name__icontains=query)
-        songs=Song.objects.filter(title__icontains=query)
-        albums=Album.objects.filter(title__icontains=query)
-        
-        if not artists and not songs and not albums :
-            lyrics_results=Song.objects.filter(lyrics__icontains=query)
-    return render(request , 'search_results.html' ,{
-        'query':query,
-        'artists':artists,
-        'songs':songs,
-        'albums':albums,
-        'lyric_results':lyrics_results,
-        })
+def ajax_search(request):
+    query = request.GET.get('q', '').strip()
+    data = {
+        'artists': [],
+        'songs': [],
+        'albums': [],
+        'lyrics_results': [],
+    }
+
+    try:
+        if query:
+            # Search for artists
+            data['artists'] = list(Artist.objects.filter(name__icontains=query).values('id', 'name', 'profile_picture'))
+
+            # Search for songs
+            data['songs'] = list(Song.objects.filter(title__icontains=query).values('id', 'title', 'artist__name'))
+
+            # Search for albums
+            data['albums'] = list(Album.objects.filter(title__icontains=query).values('id', 'title', 'artist__name'))
+
+            # Search for lyrics if no other results
+            if not (data['artists'] or data['songs'] or data['albums']):
+                data['lyrics_results'] = list(Song.objects.filter(lyrics__icontains=query).values('id', 'title', 'artist__name', 'lyrics'))
+
+    except Exception as e:
+        # Catch any unexpected error and log it
+        print(f"Error in ajax_search view: {e}")
+        data['error'] = str(e)
+
+    return JsonResponse(data)
+
 
 def register(request):
     if request.method == 'POST':

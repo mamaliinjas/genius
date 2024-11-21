@@ -1,4 +1,25 @@
-<form action="{% url 'search' %}" method="get" class="search-form">
-    <input type="text" name="q" placeholder="Search for artists, albums, songs, or lyrics..." required>
-    <button type="submit">Search</button>
-</form>
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <!-- Include the JS file -->
+    <script src="{% static 'js/search.js' %}"></script>
+</head>
+
+<body>
+    <!-- Search Form -->
+    <form method="get" action="#">
+        <input type="text" id="search-input" placeholder="Search..." value="{{ request.GET.q }}">
+    </form>
+
+    <!-- Display search results here -->
+    <div id="search-results"></div>
+</body>
+
+</html>
