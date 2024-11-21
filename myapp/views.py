@@ -6,14 +6,30 @@ from .models import Artist , Song , Album
 from django.db.models import Q
 
 # Create your views here.
-
 def home(request):
+    return render(request , 'home.html')
+
+def search(request):
     query=request.GET.get('q' , '')
     artists=[]
     songs=[]
     albums=[]
-    lyrics=[]
-    return render(request , 'home.html')
+    lyrics_results=[]
+    
+    if query:
+        artists=Artist.objects.filter(name__icontains=query)
+        songs=Song.objects.filter(title__icontains=query)
+        albums=Album.objects.filter(title__icontains=query)
+        
+        if not artists and not songs and not albums :
+            lyrics_results=Song.objects.filter(lyrics__icontains=query)
+    return render(request , 'search_results.html' ,{
+        'query':query,
+        'artists':artists,
+        'songs':songs,
+        'albums':albums,
+        'lyric_results':lyrics_results,
+        })
 
 def register(request):
     if request.method == 'POST':
