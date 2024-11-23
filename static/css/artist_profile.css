@@ -14,7 +14,7 @@
     object-fit: cover;
     overflow: hidden;
     display: block;
-    max-height: 1080px;
+    max-height: 430px;
 }
 
 /* Profile Picture Styling */
@@ -23,8 +23,8 @@
     bottom: -50px;
     left: 70%;
     transform: translateX(-50%);
-    width: 200px;
-    height: 200px;
+    width: 270px;
+    height: 270px;
     border-radius: 50%;
     border: 5px solid white;
     z-index: 1;
@@ -40,9 +40,11 @@
 /* Artist Info Section */
 .artist-info {
     text-align: center;
-    margin-top: 80px;
-    /* To offset the profile picture */
+    margin-top: 40px;
     padding: 20px;
+    position: relative;
+    left: 70%;
+    transform: translateX(-50%);
 }
 
 html,
@@ -50,9 +52,7 @@ body {
     margin: 0;
     padding: 0;
     width: 100%;
-    /* Full width of the viewport */
     overflow-x: hidden;
-    /* Disable horizontal scrolling */
 }
 
 ul,
@@ -63,5 +63,4 @@ li {
 
 a {
     word-break: break-word;
-    /* Handle long links */
 }

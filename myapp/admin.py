@@ -3,8 +3,8 @@ from .models import Artist, Album, Song
 
 # Register your models here.
 class ArtistAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'bio']
-    list_display = ['name', 'bio', 'profile_picture']
+    search_fields = ['name', 'bio' , 'aka']
+    list_display = ['name', 'bio', 'profile_picture' , 'aka']
     list_filter = ['name']
 
 class AlbumAdmin(admin.ModelAdmin):

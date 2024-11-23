@@ -18,7 +18,7 @@ class Artist(models.Model):
     bio=models.TextField()
     profile_picture=models.ImageField(upload_to='artist_profiles/')
     cover_picture=models.ImageField(upload_to='artist_covers/' , validators=[validate_cover_image] , null=True , blank=True)
-    
+    aka=models.CharField(max_length=200 , null=True , blank=True)
     def __str__(self):
         return self.name
     
@@ -42,6 +42,6 @@ class Song(models.Model):
     audio_file=models.FileField(upload_to='songs/' , blank=True , null=True)
     lyrics = models.TextField(blank=True, null=True)
     album = models.ForeignKey('Album', on_delete=models.CASCADE, related_name='songs', blank=True, null=True)
-    
+    views=models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.title

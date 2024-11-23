@@ -22,6 +22,9 @@
     <!-- Artist Name and Bio -->
     <div class="artist-info">
         <h1>{{ artist.name }}</h1>
+        {% if artist.aka %}
+        <p><strong>AKA:</strong> {{ artist.aka }}</p>
+        {% endif %}
         <p>{{ artist.bio }}</p>
     </div>
 
