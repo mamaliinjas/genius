@@ -1,14 +1,28 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from PIL import Image
 
 # Create your models here.
+def validate_cover_image(image):
+   img=Image.open(image)
+   width , height = img.size
+   if width != 1920:
+        raise ValidationError("Cover image width must be 1920px.")
+
+   if not (400 <= height <= 1080):
+        raise ValidationError(
+            "Cover image height must be between 400px and 1080px."
+        )
 class Artist(models.Model):
     name=models.CharField(max_length=100)
     bio=models.TextField()
     profile_picture=models.ImageField(upload_to='artist_profiles/')
-    cover_picture=models.ImageField(upload_to='artist_covers/')
+    cover_picture=models.ImageField(upload_to='artist_covers/' , validators=[validate_cover_image] , null=True , blank=True)
     
     def __str__(self):
         return self.name
+    
+
     
 class Album(models.Model):
     title=models.CharField(max_length=200)
