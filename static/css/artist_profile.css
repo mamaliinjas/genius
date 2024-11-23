@@ -90,21 +90,40 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Last Album Section */
-.album-card {
+/* Albums Section */
+.albums-section {
+    margin-top: 30px;
+    background-color: #f4f4f4;
+    /* Light grey background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 40%;
+    margin: 20px auto;
+    margin-left: 40px;
+    padding-left: 40px;
+}
+
+.albums-section h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Album Box Styling */
+.album-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f8f8f8;
+    background-color: #fff;
+    padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 70%;
+    margin: 0 auto;
 }
 
-.album-card a {
+.album-box a {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -125,16 +144,9 @@ button:hover {
     border-radius: 5px;
 }
 
-.album-card h3 {
+.album-box h3 {
     font-size: 18px;
     font-weight: bold;
-}
-
-/* Artist Info Section */
-.artist-info {
-    text-align: center;
-    margin-top: 80px;
-    padding: 20px;
 }
 
 html,

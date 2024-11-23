@@ -50,20 +50,23 @@
         </div>
     </div>
 
-    <!-- Albums -->
-    <h2>Albums:</h2>
-    {% if albums %}
-    <div class="album-card">
-        <a href="{% url 'album_details' albums.last.id %}">
-            <div class="album-cover">
-                <img src="{{ albums.last.profile_photo.url }}" alt="{{ albums.last.title }} Cover">
-            </div>
-            <h3>{{ albums.last.title }}</h3>
-        </a>
+    <!-- Albums Section with Box -->
+    <div class="albums-section">
+        <h2>Albums:</h2>
+
+        {% if albums %}
+        <div class="album-box">
+            <a href="{% url 'album_details' albums.last.id %}">
+                <div class="album-cover">
+                    <img src="{{ albums.last.cover_photo.url }}" alt="{{ albums.last.title }} Cover">
+                </div>
+                <h3>{{ albums.last.title }}</h3>
+            </a>
+        </div>
+        {% else %}
+        <p>No albums available</p>
+        {% endif %}
     </div>
-    {% else %}
-    <p>No albums available</p>
-    {% endif %}
 </body>
 
 </html>

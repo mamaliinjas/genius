@@ -99,7 +99,7 @@ def artist_profile(request, artist_id):
         song = get_object_or_404(Song , pk=request.POST['song_id'])
         song.views += 1
         song.save()
-    albums = artist.albums.all()  
+    albums = artist.albums.all().order_by('-release_date')  
     return render(request, 'artist_profile.html', {'artist': artist, 'albums': albums, 'songs': songs})
 
 
