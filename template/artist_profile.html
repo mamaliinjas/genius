@@ -28,21 +28,42 @@
         <p>{{ artist.bio }}</p>
     </div>
 
-    <!-- Albums -->
-    <h2>Albums:</h2>
-    <ul>
-        {% for album in albums %}
-        <li><a href="{% url 'album_details' album.id %}">{{ album.title }}</a></li>
-        {% endfor %}
-    </ul>
 
     <!-- Songs -->
     <h2>Songs:</h2>
-    <ul>
-        {% for song in songs %}
-        <li><a href="{% url 'song_details' song.id %}">{{ song.title }}</a></li>
-        {% endfor %}
-    </ul>
+
+    <div class="song-list">
+        <h2>Top Songs</h2>
+        <div class="song-container">
+            {% for song in songs %}
+            <div class="song-box">
+                <img src="{{ song.album.cover_photo.url }}" alt="{{ song.title }} Cover" class="song-cover">
+                <p><strong>{{ song.title }}</strong></p>
+                <p>{{ song.artist.name }}</p>
+                <form method="POST" action="{% url 'artist_profile' artist.id %}">
+                    {% csrf_token %}
+                    <button type="submit" name="song_id" value="{{ song.id }}">Play</button>
+                </form>
+                <p>Views: {{ song.views }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Albums -->
+    <h2>Albums:</h2>
+    {% if albums %}
+    <div class="album-card">
+        <a href="{% url 'album_details' albums.last.id %}">
+            <div class="album-cover">
+                <img src="{{ albums.last.profile_photo.url }}" alt="{{ albums.last.title }} Cover">
+            </div>
+            <h3>{{ albums.last.title }}</h3>
+        </a>
+    </div>
+    {% else %}
+    <p>No albums available</p>
+    {% endif %}
 </body>
 
 </html>

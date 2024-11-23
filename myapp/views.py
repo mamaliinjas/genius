@@ -94,13 +94,17 @@ def login(request):
 
 def artist_profile(request, artist_id):
     artist = get_object_or_404(Artist, id=artist_id)
-    albums = artist.albums.all()
-    songs = artist.songs.all()    
+    songs =Song.objects.filter(artist=artist).order_by('-views')[:10]
+    if request.method == 'POST' and 'song_id' in request.POST:
+        song = get_object_or_404(Song , pk=request.POST['song_id'])
+        song.views += 1
+        song.save()
+    albums = artist.albums.all()  
     return render(request, 'artist_profile.html', {'artist': artist, 'albums': albums, 'songs': songs})
 
 
 def album_details(request, album_id):
-    album = get_object_or_404(Album, id=album_id)
+    album = get_object_or_404(Album, pk=album_id)
     songs_in_album = album.songs.all()  
     return render(request, 'album_details.html', {'album': album, 'songs_in_album': songs_in_album})
 
