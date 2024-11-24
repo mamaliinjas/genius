@@ -1,16 +1,28 @@
-<form method="POST" action="{% url 'login' %}">
-    {% csrf_token %}
-    <label for="login_input">Email or Username:</label>
-    <input type="text" id="login_input" name="login_input" required>
+{% load static %}
+<html lang="en">
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
 
-    <button type="submit">Login</button>
-</form>
+<body>
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <label for="login_input">Email or Username:</label>
+        <input type="text" id="login_input" name="login_input" required>
 
-{% if messages %}
-{% for message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endif %}
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    {% if messages %}
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>

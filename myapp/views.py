@@ -2,13 +2,18 @@ from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth.models import  User
 from django.contrib import messages
 from django.contrib.auth import login as auth_login , authenticate
-from .models import Artist , Song , Album
+from .models import Artist , Song , Album , News
 from django.db.models import Q
 from django.http import JsonResponse
 
 # Create your views here.
 def home(request):
-    return render(request , 'home.html')
+    top_news = News.objects.filter(is_featured=True).order_by('-published_date')[:1]
+    latest_news = News.objects.filter(is_featured=False).order_by('-published_date')[:4]
+    return render(request , 'home.html'  , {
+        'top_news' : top_news , 
+        'latest_news' : latest_news
+    })
 
 def ajax_search(request):
     query = request.GET.get('q', '').strip()
@@ -63,7 +68,7 @@ def register(request):
 
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
-
+        messages.success(request , 'Sign Up Succesfull , Please Log In')
         return redirect('login')
 
     else:
@@ -87,8 +92,10 @@ def login(request):
             auth_login(request, user)
             return redirect('home')
         else:
-            messages.info(request, 'Invalid email/username or password')
-            return redirect('login') 
+            if not User.objects.filter(username=username).exists():
+                messages.error(request, 'Account does not exist. Please register.')
+            else:
+                messages.error(request, 'Incorrect password.')
     return render(request, 'login.html') 
    
 
@@ -112,6 +119,15 @@ def album_details(request, album_id):
 def song_details(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     return render(request, 'song_details.html', {'song': song})
+
+def news_section(request):
+    top_news=News.objects.filter(is_featured=True).order_by('-published_date')[:1]
+    latest_news=News.objects.filter(is_featured=False).order_by('-published_date')[:4]
+    
+    return render (request , news_section.html , {
+        'top_news': top_news,
+        'latest_news':latest_news,
+    })
 
 
             

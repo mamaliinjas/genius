@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>News Section</title>
+    <link rel="stylesheet" href="{% static 'css/news_section.css' %}">
+</head>
+
+<body>
+    <section class="news-container">
+        <h1>Latest News</h1>
+
+        <!-- Top News -->
+        <div class="top-news">
+            {% for news in top_news %}
+            <div class="news-item featured">
+                {% if news.cover_image %}
+                <img src="{{ news.cover_image.url }}" alt="Top News Cover">
+                {% endif %}
+                <h2>{{ news.title }}</h2>
+                <p>{{ news.content|truncatewords:20 }}</p>
+                <a href="#">Read More</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Latest News -->
+        <div class="latest-news">
+            {% for news in latest_news %}
+            <div class="news-item">
+                {% if news.cover_image %}
+                <img src="{{ news.cover_image.url }}" alt="News Cover">
+                {% endif %}
+                <h3>{{ news.title }}</h3>
+                <p>{{ news.content|truncatewords:15 }}</p>
+                <a href="#">Read More</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from PIL import Image
+from django.utils.timezone import now
 
 # Create your models here.
 def validate_cover_image(image):
@@ -45,3 +46,20 @@ class Song(models.Model):
     views=models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.title
+    
+    
+class News(models.Model):
+    title=models.CharField(max_length=250)
+    content=models.TextField()
+    cover_image=models.ImageField(upload_to='news_covers/' , null=True , blank=True)
+    published_date=models.DateTimeField(default= now)
+    is_featured=models.BooleanField(default=False)
+    def save(self, *args , **kwargs):
+        if self.is_featured:
+            News.objects.filter(is_featured=True).exclude(pk=self.pk).update(is_featured=False)
+        super().save(*args , **kwargs)
+            
+    def __st__(self):
+        return self.title
+    
+    

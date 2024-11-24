@@ -10,6 +10,7 @@
     <title>Search</title>
     <!-- Include the JS file -->
     <script src="{% static 'js/search.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 
 <body>
@@ -20,6 +21,9 @@
 
     <!-- Display search results here -->
     <div id="search-results"></div>
+
+
+    {% include 'news_section.html' %}
 </body>
 
 </html>
