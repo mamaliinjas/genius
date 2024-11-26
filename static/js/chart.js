@@ -1,91 +1,63 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Get filter form elements
     const typeFilter = document.getElementById('type-filter');
     const genreFilter = document.getElementById('genre-filter');
     const timeFilter = document.getElementById('time-filter');
-    const chartResults = document.getElementById('chart-results');
-    const chartCanvas = document.getElementById('chart');
-    let chartInstance = null; // Store the Chart.js instance
+    const chartResultsContainer = document.getElementById('chart-results');
 
-    function fetchFilteredResults() {
-        const type = typeFilter.value;
-        const genre = genreFilter.value;
-        const time = timeFilter.value;
+    // Check if elements exist
+    if (!typeFilter || !genreFilter || !timeFilter || !chartResultsContainer) {
+        console.error('Missing required DOM elements (filters or chart results container)');
+        return;
+    }
 
-        fetch(`/filter_views/?type=${type}&genre=${genre}&time=${time}`)
+    // Function to fetch and display chart data based on selected filters
+    function fetchChartData() {
+        const type = typeFilter.value;  // Get selected type (song, album, artist)
+        const genre = genreFilter.value;  // Get selected genre
+        const time = timeFilter.value;  // Get selected time range
+
+        // Fetch chart data from the backend based on selected filters
+        fetch(`/chart_data/?type=${type}&genre=${genre}&time=${time}`)
             .then(response => response.json())
             .then(data => {
-                chartResults.innerHTML = ''; // Clear previous results
-
-                if (data.results.length > 0) {
-                    const resultList = document.createElement('ul');
-                    data.results.forEach(item => {
-                        const li = document.createElement('li');
-                        if (type === 'song') {
-                            li.innerHTML = `<img src="${item.image}" alt="${item.title}" style="width: 50px; height: 50px;"/> <a href='/song/${item.id}/'>${item.title} by ${item.artist}</a> - ${item.views} views`;
-                        } else if (type === 'album') {
-                            li.innerHTML = `<img src="${item.image}" alt="${item.title}" style="width: 50px; height: 50px;"/> <a href='/album/${item.id}/'>${item.title} by ${item.artist}</a> - ${item.views} views`;
-                        } else if (type === 'artist') {
-                            li.innerHTML = `<img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px;"/> <a href='/artist/${item.id}/'>${item.name}</a> - ${item.views} views`;
-                        }
-                        resultList.appendChild(li);
-                    });
-                    chartResults.appendChild(resultList);
-                } else {
-                    chartResults.innerHTML = '<p>No results found</p>';
+                // Check for errors
+                if (data.error) {
+                    console.error('Error fetching chart data:', data.error);
+                    return;
                 }
 
-                // Render chart
-                renderChart(data.chart_data.labels, data.chart_data.values, data.chart_data.images, type);
+                // Clear previous results
+                chartResultsContainer.innerHTML = '';
+
+                // Loop through the chart data and display results
+                data.chart_data.labels.forEach((label, index) => {
+                    const rankItem = document.createElement('div');
+                    rankItem.classList.add('chart-item');
+
+                    rankItem.innerHTML = `
+                        <div class="chart-item-content">
+                            <span class="chart-rank">${index + 1}</span>
+                            <span class="chart-title">${label}</span>
+                            <span class="chart-artist">${data.results[index].artist}</span>
+                            <span class="chart-views">${data.results[index].views} views</span>
+                        </div>
+                        ${data.chart_data.images[index] ? `<img class="chart-image" src="${data.chart_data.images[index]}" alt="cover photo">` : ''}
+                    `;
+
+                    chartResultsContainer.appendChild(rankItem);
+                });
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error fetching chart data:', error);
+            });
     }
 
-    function renderChart(labels, values, images, type) {
-        if (chartInstance) {
-            chartInstance.destroy(); // Destroy the old chart if it exists
-        }
+    // Add event listeners for filter changes to re-fetch chart data
+    typeFilter.addEventListener('change', fetchChartData);
+    genreFilter.addEventListener('change', fetchChartData);
+    timeFilter.addEventListener('change', fetchChartData);
 
-        chartInstance = new Chart(chartCanvas, {
-            type: 'bar',
-            data: {
-                labels: labels, // Song/Album/Artist names
-                datasets: [{
-                    label: `Top ${type}s by Views`,
-                    data: values, // View counts
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-                indexAxis: 'y', // Make the bars horizontal
-                responsive: true,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                    },
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            title: function (tooltipItem) {
-                                const index = tooltipItem[0].dataIndex;
-                                const label = labels[index];
-                                const artist = images[index] ? `<img src="${images[index]}" alt="${label}" style="width: 20px; height: 20px;"/>` : '';
-                                return `${label} ${artist}`;
-                            },
-                        },
-                    },
-                },
-            },
-        });
-    }
-
-    // Add event listeners to filters
-    [typeFilter, genreFilter, timeFilter].forEach(filter =>
-        filter.addEventListener('change', fetchFilteredResults)
-    );
-
-    // Initial fetch
-    fetchFilteredResults();
+    // Initial fetch on page load
+    fetchChartData();
 });

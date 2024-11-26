@@ -14,8 +14,7 @@ urlpatterns=[
     path('song/<int:song_id>/' , views.song_details , name='song_details'),
     path('ajax_search/' , views.ajax_search , name='ajax_search'),
     path('news/' , views.news_section , name='news_section'),
-    path('charts/', views.chart_section, name='chart_section'),
-    path('filter_views/', views.chart_section, name='filter_views'),
+    path('chart_data/', views.chart_section, name='chart_section'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -10,10 +10,10 @@
     <title>Search</title>
     <!-- Include the JS file -->
     <script src="{% static 'js/search.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'js/chart.js' %}" defer></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/chart.css' %}">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <script src="{% static 'js/chart.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -29,32 +29,30 @@
     {% include 'news_section.html' %}
 
 
-    <div id="filters">
+    <form id="filter-form">
         <select id="type-filter">
-            <option value="song">Songs</option>
-            <option value="album">Albums</option>
-            <option value="artist">Artists</option>
-            <option value="lyric">Lyrics</option>
+            <option value="song">Song</option>
+            <option value="album">Album</option>
+            <option value="artist">Artist</option>
         </select>
+
         <select id="genre-filter">
             <option value="all">All Genres</option>
-            <option value="rap">Rap</option>
-            <option value="pop">Pop</option>
-            <option value="rnb">R&B</option>
-            <option value="country">Country</option>
             <option value="rock">Rock</option>
+            <option value="pop">Pop</option>
+            <!-- Add more genres as needed -->
         </select>
+
         <select id="time-filter">
             <option value="all">All Time</option>
-            <option value="day">Day</option>
-            <option value="week">Week</option>
-            <option value="month">Month</option>
+            <option value="day">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
         </select>
-    </div>
-    <div id="chart-container">
-        <canvas id="chart"></canvas> <!-- Chart.js Canvas -->
-    </div>
+    </form>
+
     <div id="chart-results"></div>
+
 </body>
 
 </html>

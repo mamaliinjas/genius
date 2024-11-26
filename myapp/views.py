@@ -132,14 +132,19 @@ def news_section(request):
     })
 
 
+
 def chart_section(request):
+    # Get filters from query parameters
     type_filter = request.GET.get('type', 'song')
     genre_filter = request.GET.get('genre', 'all')
     time_filter = request.GET.get('time', 'all')
-    
-    data = {'results': [], 'chart_data': {'labels': [], 'values': [] , 'images': []}}
+
+    # Data structure to store results
+    data = {'results': [], 'chart_data': {'labels': [], 'values': [], 'images': []}}
+
     today = date.today()
-    
+
+    # Handle time filtering (day, week, month)
     if time_filter == 'day':
         start_date = today - timedelta(days=1)
     elif time_filter == 'week':
@@ -148,8 +153,8 @@ def chart_section(request):
         start_date = today - timedelta(days=30)
     else:
         start_date = None
-        
 
+    # Handle type filtering (song, album, artist, lyric)
     if type_filter == 'song':
         queryset = Song.objects.all()
     elif type_filter == 'album':
@@ -160,17 +165,19 @@ def chart_section(request):
         queryset = Song.objects.filter(lyrics__isnull=False)
     else:
         return JsonResponse({'error': 'invalid type filter'}, status=400)
-        
 
-        
+    # Handle genre filtering
     if genre_filter != 'all' and type_filter in ['song', 'album']:
         queryset = queryset.filter(genre=genre_filter)
 
+    # Handle date filtering
     if start_date and type_filter in ['song', 'album']:
         queryset = queryset.filter(release_date__gte=start_date)
 
+    # Order by views and limit to top 10
     queryset = queryset.order_by('-views')[:10]
-    
+
+    # Build the results and chart data
     for item in queryset:
         if type_filter == 'song':
             data['results'].append({
@@ -196,7 +203,6 @@ def chart_section(request):
             data['chart_data']['values'].append(item.views)
             data['chart_data']['images'].append(item.cover_photo.url if item.cover_photo else None)
 
-
         elif type_filter == 'artist':
             data['results'].append({
                 'id': item.id,
@@ -207,6 +213,5 @@ def chart_section(request):
             data['chart_data']['labels'].append(item.name)
             data['chart_data']['values'].append(item.views)
             data['chart_data']['images'].append(item.profile_picture.url if item.profile_picture else None)
-            
-            
+
     return JsonResponse(data)
