@@ -4,6 +4,15 @@ from PIL import Image
 from django.utils.timezone import now
 
 # Create your models here.
+GENRE_CHOICES=[
+    ('rap' , 'Rap'),
+    ('pop' , 'Pop'),
+    ('rnb' , 'R&B'),
+    ('country' , 'Country'),
+    ('rock' , 'Rock'),    
+]
+
+
 def validate_cover_image(image):
    img=Image.open(image)
    width , height = img.size
@@ -20,6 +29,8 @@ class Artist(models.Model):
     profile_picture=models.ImageField(upload_to='artist_profiles/')
     cover_picture=models.ImageField(upload_to='artist_covers/' , validators=[validate_cover_image] , null=True , blank=True)
     aka=models.CharField(max_length=200 , null=True , blank=True)
+    views=models.PositiveBigIntegerField(default=0)
+    genre=models.CharField(max_length=20 , choices=GENRE_CHOICES , null=True , blank=True)
     def __str__(self):
         return self.name
     
@@ -31,6 +42,8 @@ class Album(models.Model):
     cover_photo=models.ImageField(upload_to='album_covers/' , blank=True , null=True)
     profile_photo=models.ImageField(upload_to='album_profiles/' , blank=True , null=True)
     artist = models.ForeignKey('Artist' , on_delete=models.CASCADE , related_name='albums')
+    views=models.PositiveIntegerField(default=0)
+    genre=models.CharField(max_length=20 , choices=GENRE_CHOICES , null=True , blank=True)
       
     def __str__(self):
           return self.title
@@ -44,6 +57,9 @@ class Song(models.Model):
     lyrics = models.TextField(blank=True, null=True)
     album = models.ForeignKey('Album', on_delete=models.CASCADE, related_name='songs', blank=True, null=True)
     views=models.PositiveIntegerField(default=0)
+    release_date=models.DateField(blank=True, null=True)
+    genre=models.CharField(max_length=20 , choices=GENRE_CHOICES , null=True, blank=True)
+    
     def __str__(self):
         return self.title
     

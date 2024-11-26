@@ -3,8 +3,10 @@ from django.contrib.auth.models import  User
 from django.contrib import messages
 from django.contrib.auth import login as auth_login , authenticate
 from .models import Artist , Song , Album , News
-from django.db.models import Q
+from django.db.models import Q , Sum
 from django.http import JsonResponse
+from datetime import timedelta , date
+import json
 
 # Create your views here.
 def home(request):
@@ -124,10 +126,87 @@ def news_section(request):
     top_news=News.objects.filter(is_featured=True).order_by('-published_date')[:1]
     latest_news=News.objects.filter(is_featured=False).order_by('-published_date')[:4]
     
-    return render (request , news_section.html , {
+    return render (request , 'news_section.html' , {
         'top_news': top_news,
         'latest_news':latest_news,
     })
 
 
+def chart_section(request):
+    type_filter = request.GET.get('type', 'song')
+    genre_filter = request.GET.get('genre', 'all')
+    time_filter = request.GET.get('time', 'all')
+    
+    data = {'results': [], 'chart_data': {'labels': [], 'values': [] , 'images': []}}
+    today = date.today()
+    
+    if time_filter == 'day':
+        start_date = today - timedelta(days=1)
+    elif time_filter == 'week':
+        start_date = today - timedelta(days=7)
+    elif time_filter == 'month':
+        start_date = today - timedelta(days=30)
+    else:
+        start_date = None
+        
+
+    if type_filter == 'song':
+        queryset = Song.objects.all()
+    elif type_filter == 'album':
+        queryset = Album.objects.all()
+    elif type_filter == 'artist':
+        queryset = Artist.objects.all()
+    elif type_filter == 'lyric':
+        queryset = Song.objects.filter(lyrics__isnull=False)
+    else:
+        return JsonResponse({'error': 'invalid type filter'}, status=400)
+        
+
+        
+    if genre_filter != 'all' and type_filter in ['song', 'album']:
+        queryset = queryset.filter(genre=genre_filter)
+
+    if start_date and type_filter in ['song', 'album']:
+        queryset = queryset.filter(release_date__gte=start_date)
+
+    queryset = queryset.order_by('-views')[:10]
+    
+    for item in queryset:
+        if type_filter == 'song':
+            data['results'].append({
+                'id': item.id,
+                'title': item.title,
+                'artist': item.artist.name,
+                'views': item.views,
+                'image': item.cover_photo.url if item.cover_photo else None
+            })
+            data['chart_data']['labels'].append(item.title)
+            data['chart_data']['values'].append(item.views)
+            data['chart_data']['images'].append(item.cover_photo.url if item.cover_photo else None)
+
+        elif type_filter == 'album':
+            data['results'].append({
+                'id': item.id,
+                'title': item.title,
+                'artist': item.artist.name,
+                'views': item.views,
+                'image': item.cover_photo.url if item.cover_photo else None
+            })
+            data['chart_data']['labels'].append(item.title)
+            data['chart_data']['values'].append(item.views)
+            data['chart_data']['images'].append(item.cover_photo.url if item.cover_photo else None)
+
+
+        elif type_filter == 'artist':
+            data['results'].append({
+                'id': item.id,
+                'name': item.name,
+                'views': item.views,
+                'image': item.profile_picture.url if item.profile_picture else None
+            })
+            data['chart_data']['labels'].append(item.name)
+            data['chart_data']['values'].append(item.views)
+            data['chart_data']['images'].append(item.profile_picture.url if item.profile_picture else None)
             
+            
+    return JsonResponse(data)

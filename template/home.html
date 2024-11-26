@@ -10,6 +10,9 @@
     <title>Search</title>
     <!-- Include the JS file -->
     <script src="{% static 'js/search.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/chart.js' %}" defer></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chart.css' %}">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 
@@ -24,6 +27,34 @@
 
 
     {% include 'news_section.html' %}
+
+
+    <div id="filters">
+        <select id="type-filter">
+            <option value="song">Songs</option>
+            <option value="album">Albums</option>
+            <option value="artist">Artists</option>
+            <option value="lyric">Lyrics</option>
+        </select>
+        <select id="genre-filter">
+            <option value="all">All Genres</option>
+            <option value="rap">Rap</option>
+            <option value="pop">Pop</option>
+            <option value="rnb">R&B</option>
+            <option value="country">Country</option>
+            <option value="rock">Rock</option>
+        </select>
+        <select id="time-filter">
+            <option value="all">All Time</option>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+        </select>
+    </div>
+    <div id="chart-container">
+        <canvas id="chart"></canvas> <!-- Chart.js Canvas -->
+    </div>
+    <div id="chart-results"></div>
 </body>
 
 </html>
