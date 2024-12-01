@@ -1,56 +1,88 @@
-#chart-container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 10px;
 }
 
 .chart-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px;
-    margin-bottom: 10px;
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    gap: 45px;
 }
 
-.chart-item-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+.chart-item:hover {
+    background-color: #f9f9f9;
 }
 
 .chart-rank {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-right: 10px;
-}
-
-.chart-song {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    flex-grow: 1;
-}
-
-.chart-artist {
-    font-size: 14px;
-    color: #666;
-    margin-left: 10px;
-}
-
-.chart-views {
-    font-size: 14px;
-    color: #888;
-    margin-left: 10px;
+    width: 40px;
+    text-align: center;
+    font-weight: lighter;
+    font-size: 1.2rem;
 }
 
 .chart-image {
-    width: 50px;
-    height: 50px;
+    width: 65px;
+    height: 65px;
     object-fit: cover;
-    border-radius: 4px;
-    margin-left: 10px;
+    margin: 0 15px;
+    border-radius: 5px;
+}
+
+.chart-song {
+    flex: 2;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    color: #333;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 0;
+}
+
+.chart-artist {
+    flex: 1;
+    color: #333;
+    text-align: left;
+    font-weight: lighter;
+    padding-right: 50px;
+    font-family: 'arial', sans-serif;
+    font-size: 1.3rem;
+    padding-left: 10px;
+}
+
+.chart-views {
+    font-size: 0.9rem;
+    color: #999;
+    text-align: right;
+    padding-right: 120px;
+}
+
+.chart-lyrics-label {
+    font-size: 0.9rem;
+    color: grey;
+    margin-left: 5px;
+    font-style: italic;
+}
+
+.chart-item.artist-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    justify-content: flex-start;
+    /* Align the content to the left */
+    padding: 15px 0;
+    /* Add some padding for better spacing */
+}
+
+.chart-artist-bold {
+    font-weight: bold;
 }
