@@ -59,7 +59,7 @@ class Song(models.Model):
     views=models.PositiveIntegerField(default=0)
     release_date=models.DateField(blank=True, null=True)
     genre=models.CharField(max_length=20 , choices=GENRE_CHOICES , null=True, blank=True)
-    cover_photo = models.ImageField(upload_to='song_covers/', null=True, blank=True) 
+    song_cover= models.ImageField(upload_to='song_covers/', null=True, blank=True) 
     
     def __str__(self):
         return self.title

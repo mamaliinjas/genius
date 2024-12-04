@@ -7,6 +7,9 @@ from django.db.models import Q , Sum
 from django.http import JsonResponse
 from datetime import timedelta , date
 import json
+from colorthief import ColorThief
+from django.conf import settings
+import os
 
 # Create your views here.
 def home(request):
@@ -114,13 +117,31 @@ def artist_profile(request, artist_id):
 
 def album_details(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
-    songs_in_album = album.songs.all()  
+    songs_in_album = album.songs.all()
     return render(request, 'album_details.html', {'album': album, 'songs_in_album': songs_in_album})
+
+
 
 
 def song_details(request, song_id):
     song = get_object_or_404(Song, id=song_id)
-    return render(request, 'song_details.html', {'song': song})
+    dominant_color = (0, 0, 0)  # Default black color
+
+    # Check if song has a valid cover
+    song_cover_path = song.song_cover.path if song.song_cover else None
+    if song_cover_path and os.path.isfile(song_cover_path):
+        try:
+            color_thief = ColorThief(song_cover_path)
+            dominant_color = color_thief.get_color(quality=1)
+        except Exception as e:
+            print(f"Error with ColorThief: {e}")
+    else:
+        print("Song cover not found or invalid.")
+
+    return render(request, 'song_details.html', {
+        'song': song,
+        'dominant_color': f'rgb{dominant_color}',
+    })
 
 def news_section(request):
     top_news=News.objects.filter(is_featured=True).order_by('-published_date')[:1]
@@ -185,11 +206,11 @@ def chart_section(request):
                 'title': item.title,
                 'artist': item.artist.name,
                 'views': item.views,
-                'image': item.cover_photo.url if item.cover_photo else None
+                'image': item.song_cover.url if item.song_cover else None
             })
             data['chart_data']['labels'].append(item.title)
             data['chart_data']['values'].append(item.views)
-            data['chart_data']['images'].append(item.cover_photo.url if item.cover_photo else None)
+            data['chart_data']['images'].append(item.song_cover.url if item.song_cover else None)
 
         elif type_filter == 'album':
             data['results'].append({
@@ -215,3 +236,5 @@ def chart_section(request):
             data['chart_data']['images'].append(item.profile_picture.url if item.profile_picture else None)
 
     return JsonResponse(data)
+
+

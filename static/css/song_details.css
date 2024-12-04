@@ -1,0 +1,87 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Gradient Background Styling */
+.song-background {
+    position: absolute;
+    top: 0.5;
+    right: 0;
+    width: 100%;
+    height: 50vh;
+    /* Set height to 50% of the viewport */
+    z-index: -1;
+    /* Ensure it's behind all content */
+}
+
+/* Song Info Section */
+.song-details-container {
+    font-family: Arial, sans-serif;
+    color: white;
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    /* Vertically aligns items */
+    justify-content: space-between;
+    /* Creates space between the cover and text */
+}
+
+/* Song Cover Styling */
+.song-cover-container {
+    flex: 0 0 auto;
+    /* Prevents the image from resizing */
+    margin-right: 20px;
+    /* Space between cover and text */
+}
+
+.song-cover {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Song Text Styling */
+.song-text-container {
+    flex: 1;
+    /* Allows the text to take remaining space */
+    text-align: left;
+}
+
+.song-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.song-artist {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.song-description {
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+/* Lyrics Section */
+.song-lyrics-section {
+    margin: 20px;
+}
+
+.lyrics-container {
+    padding: 20px;
+}
+
+.lyrics {
+    font-size: 1.1em;
+    text-align: right;
+    direction: rtl;
+    /* For Persian text */
+    line-height: 1.6;
+}
