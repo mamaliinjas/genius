@@ -1,33 +1,46 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/album_details.css' %}">
 
-{% block content %}
-<!-- Album Cover Section -->
-<div class="album-cover-container">
-    <img src="{{ album.cover_photo.url }}" alt="{{ album.title }} Cover" class="album-cover">
-    <div class="album-profile-image">
-        <img src="{{ album.profile_photo.url }}" alt="{{ album.title }} Profile" class="album-profile">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ album.title }} - {{ song.album.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/album_details.css' %}">
+
+</head>
+
+<body>
+    <!-- Include Navbar -->
+    {% include 'navbar.html' %}
+
+
+    <div class="album-cover-container">
+        <img src="{{ album.cover_photo.url }}" alt="{{ album.title }} Cover" class="album-cover">
+        <div class="album-profile-image">
+            <img src="{{ album.profile_photo.url }}" alt="{{ album.title }} Profile" class="album-profile">
+        </div>
     </div>
-</div>
 
 
-<!-- Album Info Section -->
-<div class="album-info">
-    <h1>{{ album.title }}</h1>
-    <p>By: {{ album.artist.name }}</p>
-</div>
+    <!-- Album Info Section -->
+    <div class="album-info">
+        <h1>{{ album.title }}</h1>
+        <p>By: {{ album.artist.name }}</p>
+    </div>
 
-<!-- Song List Section -->
-<div class="song-list">
-    <h2>Tracklist</h2>
-    <ul>
-        {% for song in songs_in_album %}
-        <li>
-            <strong>{{ song.title }}</strong> - {{ song.artist.name }}
-        </li>
-        {% empty %}
-        <li>No songs available for this album.</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endblock %}
+    <!-- Song List Section -->
+    <div class="song-list">
+        <h2>Tracklist</h2>
+        <ul>
+            {% for song in songs_in_album %}
+            <li>
+                <strong>{{ song.title }}</strong> - {{ song.artist.name }}
+            </li>
+            {% empty %}
+            <li>No songs available for this album.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
