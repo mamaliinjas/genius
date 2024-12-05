@@ -5,63 +5,47 @@
     box-sizing: border-box;
 }
 
-/* Gradient Background Styling */
-.song-background {
-    position: absolute;
-    top: 0.5;
-    right: 0;
+.background {
     width: 100%;
     height: 50vh;
-    /* Set height to 50% of the viewport */
     z-index: -1;
-    /* Ensure it's behind all content */
+    position: absolute;
+    top: 0;
 }
 
-/* Song Info Section */
-.song-details-container {
-    font-family: Arial, sans-serif;
-    color: white;
+.song-details {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
     position: relative;
     z-index: 1;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    /* Vertically aligns items */
-    justify-content: space-between;
-    /* Creates space between the cover and text */
+    max-width: 1200px;
+    margin: 0 auto;
+    right: -35%;
 }
 
-/* Song Cover Styling */
-.song-cover-container {
-    flex: 0 0 auto;
-    /* Prevents the image from resizing */
-    margin-right: 20px;
-    /* Space between cover and text */
-}
-
-.song-cover {
-    width: 250px;
-    height: 250px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-}
-
-/* Song Text Styling */
-.song-text-container {
-    flex: 1;
-    /* Allows the text to take remaining space */
-    text-align: left;
+.song-description-container {
+    flex-grow: 1;
+    margin-right: 30px;
+    position: relative;
+    top: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 90px;
+    max-width: 300px;
+    flex-shrink: 0;
 }
 
 .song-title {
-    font-size: 2.5em;
+    font-size: 2em;
     font-weight: bold;
     margin-bottom: 10px;
+    word-wrap: break-word;
+    line-height: 1.4;
 }
 
 .song-artist {
     font-size: 1.2em;
-    margin-bottom: 15px;
 }
 
 .song-description {
@@ -69,7 +53,22 @@
     line-height: 1.6;
 }
 
-/* Lyrics Section */
+.song-cover-container {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    top: 40px;
+    flex-shrink: 0;
+}
+
+.song-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+}
+
 .song-lyrics-section {
     margin: 20px;
 }
