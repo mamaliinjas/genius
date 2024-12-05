@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from PIL import Image
+from PIL import Image , ImageOps
 from django.utils.timezone import now
 
 # Create your models here.
@@ -71,10 +71,18 @@ class News(models.Model):
     cover_image=models.ImageField(upload_to='news_covers/' , null=True , blank=True)
     published_date=models.DateTimeField(default= now)
     is_featured=models.BooleanField(default=False)
+    detailed_description=models.TextField(null=True , blank=True)
     def save(self, *args , **kwargs):
         if self.is_featured:
             News.objects.filter(is_featured=True).exclude(pk=self.pk).update(is_featured=False)
         super().save(*args , **kwargs)
+        if self.cover_image:
+            img=Image.open(self.cover_image.path)
+            
+            desired_size=(1200 , 800)
+            
+            img=ImageOps.fit(img ,desired_size , Image.Resampling.LANCZOS)   
+            img.save(self.cover_image.path)
             
     def __st__(self):
         return self.title

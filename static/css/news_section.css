@@ -32,9 +32,16 @@ h1 {
 }
 
 .top-news img {
-    max-width: 100%;
+    width: 100%;
+    /* Full width of its container */
+    height: auto;
+    /* Maintain aspect ratio */
+    max-height: 300px;
+    /* Limit height for landscape look */
+    object-fit: cover;
+    /* Ensure it crops to fit */
     border-radius: 10px;
-    margin-bottom: 20px;
+    /* Add rounded corners */
 }
 
 .latest-news {
@@ -52,9 +59,13 @@ h1 {
 }
 
 .latest-news img {
-    max-width: 100%;
+    width: 100%;
+    /* Full width */
+    height: auto;
+    max-height: 200px;
+    /* Smaller height for smaller news items */
+    object-fit: cover;
     border-radius: 10px;
-    margin-bottom: 10px;
 }
 
 a {

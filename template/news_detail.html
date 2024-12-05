@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{{ news.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/news_detail.css' %}">
+</head>
+
+<body>
+    <div class="news-detail-container">
+        <!-- Big Title -->
+        <h1 class="news-title">{{ news.title }}</h1>
+
+        <!-- Cover Image -->
+        {% if news.cover_image %}
+        <div class="news-cover">
+            <img src="{{ news.cover_image.url }}" alt="{{ news.title }}">
+        </div>
+        {% endif %}
+
+        <!-- Detailed Description -->
+        <div class="news-description">
+            <p>{{ news.detailed_description|linebreaks }}</p>
+        </div>
+
+
+        <a href="{% url 'news_section' %}" class="back-link">Back to News Section</a>
+    </div>
+</body>
+
+</html>

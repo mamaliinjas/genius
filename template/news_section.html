@@ -12,16 +12,17 @@
     <section class="news-container">
         <h1>Latest News</h1>
 
-        <!-- Top News -->
         <div class="top-news">
             {% for news in top_news %}
             <div class="news-item featured">
-                {% if news.cover_image %}
-                <img src="{{ news.cover_image.url }}" alt="Top News Cover">
-                {% endif %}
+                <div class="image-container">
+                    {% if news.cover_image %}
+                    <img src="{{ news.cover_image.url }}" alt="Top News Cover">
+                    {% endif %}
+                </div>
                 <h2>{{ news.title }}</h2>
                 <p>{{ news.content|truncatewords:20 }}</p>
-                <a href="#">Read More</a>
+                <a href="{% url 'news_detail' news.id %}">Read More</a>
             </div>
             {% endfor %}
         </div>
@@ -35,7 +36,7 @@
                 {% endif %}
                 <h3>{{ news.title }}</h3>
                 <p>{{ news.content|truncatewords:15 }}</p>
-                <a href="#">Read More</a>
+                <a href="{% url 'news_detail' news.id%}">Read More</a>
             </div>
             {% endfor %}
         </div>

@@ -152,7 +152,12 @@ def news_section(request):
         'latest_news':latest_news,
     })
 
-
+def news_detail(request , news_id ):
+    try:
+        news =News.objects.get(id=news_id)
+    except News.DoesNotExist:
+        return render(request , '404.html' , status=404)
+    return render(request , 'news_detail.html' , { 'news' : news })
 
 def chart_section(request):
     # Get filters from query parameters
