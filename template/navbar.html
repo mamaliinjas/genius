@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Example</title>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <script src="{% static 'js/search.js' %}" defer></script>
+    <script src="https://kit.fontawesome.com/d6b3605db6.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Navbar A -->
+    <div class="navbar-a">
+        <div class="container">
+            <!-- Search Form -->
+            <form method="get" action="#" class="search-form">
+                <div class="search-bar-container">
+                    <input type="text" id="search-input" placeholder="Search lyrics & more" value="{{ request.GET.q }}">
+                    <button type="submit" class="search-button">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <!-- Search Results Dropdown -->
+                <div id="search-results" class="search-results-dropdown"></div>
+            </form>
+
+            <!-- Website Name -->
+            <div class="website-name">
+                <a href="/">Radif</a>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Navbar B -->
+    <div class="navbar-b">
+        <div class="container">
+            <a href="/featured/">Featured</a>
+            <a href="/charts/">Charts</a>
+            <a href="/videos/">Videos</a>
+        </div>
+        <!-- Social Icons -->
+        <div class="social-icons">
+            <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+
+</body>
+
+</html>

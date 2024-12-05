@@ -14,18 +14,12 @@
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'js/search.js' %}" defer></script>
     <script src="{% static 'js/chart.js' %}" defer></script>
 </head>
 
 <body>
-    <!-- Search Form -->
-    <form method="get" action="#" class="search-form">
-        <input type="text" id="search-input" placeholder="Search..." value="{{ request.GET.q }}">
-    </form>
-
-    <!-- Search Results -->
-    <div id="search-results"></div>
+    <!-- Include Navbar -->
+    {% include 'navbar.html' %}
 
     <!-- News Section -->
     {% include 'news_section.html' %}
