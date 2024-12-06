@@ -22,35 +22,46 @@
     {% include 'navbar.html' %}
 
     <!-- News Section -->
-    {% include 'news_section.html' %}
+    <div id="news_section">
+        {% include 'news_section.html' %}
+    </div>
 
     <!-- Chart Filters -->
-    <form id="filter-form" class="filter-form">
-        <select id="type-filter">
-            <option value="song" selected>Song</option>
-            <option value="album">Album</option>
-            <option value="artist">Artist</option>
-        </select>
+    <div id="chart-section">
+        <form id="filter-form" class="filter-form">
+            <select id="type-filter">
+                <option value="song" selected>Song</option>
+                <option value="album">Album</option>
+                <option value="artist">Artist</option>
+            </select>
 
-        <select id="genre-filter">
-            <option value="all" selected>All Genres</option>
-            <option value="rap">Rap</option>
-            <option value="rock">Rock</option>
-            <option value="pop">Pop</option>
-            <!-- Add more genres dynamically if needed -->
-        </select>
+            <select id="genre-filter">
+                <option value="all" selected>All Genres</option>
+                <option value="rap">Rap</option>
+                <option value="rock">Rock</option>
+                <option value="pop">Pop</option>
+                <!-- Add more genres dynamically if needed -->
+            </select>
 
-        <select id="time-filter">
-            <option value="all" selected>All Time</option>
-            <option value="day">Today</option>
-            <option value="week">This Week</option>
-            <option value="month">This Month</option>
-        </select>
-    </form>
+            <select id="time-filter">
+                <option value="all" selected>All Time</option>
+                <option value="day">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+            </select>
+        </form>
+    </div>
+
 
     <!-- Chart Results -->
     <div id="chart-results" class="chart-container"></div>
 
+
+
+    <!-- Videos Section (Add this in future) -->
+    <div id="video-section">
+        <h2>Video Section Coming Soon...</h2>
+    </div>
 </body>
 
 </html>
