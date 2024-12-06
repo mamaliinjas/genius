@@ -10,6 +10,7 @@ import json
 from colorthief import ColorThief
 from django.conf import settings
 import os
+from django.contrib.auth import logout
 
 # Create your views here.
 def home(request):
@@ -103,7 +104,11 @@ def login(request):
                 messages.error(request, 'Incorrect password.')
     return render(request, 'login.html') 
    
-
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+    
+    
 def artist_profile(request, artist_id):
     artist = get_object_or_404(Artist, id=artist_id)
     songs =Song.objects.filter(artist=artist).order_by('-views')[:10]

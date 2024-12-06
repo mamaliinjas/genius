@@ -9,6 +9,7 @@ urlpatterns=[
     path('' , views.home , name='home'),
     path('register' , views.register , name='register'),
     path('login' , views.login , name='login'),
+    path('logout/' , views.logout_view , name='logout') , 
     path('artist/<int:artist_id>/' , views.artist_profile , name='artist_profile'),
     path('album/<int:album_id>/' , views.album_details , name='album_details'),
     path('song/<int:song_id>/' , views.song_details , name='song_details'),

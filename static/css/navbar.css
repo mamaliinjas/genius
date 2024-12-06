@@ -7,7 +7,7 @@
     color: white;
     padding: 10px 10px;
     position: relative;
-    padding-top: 0;
+    padding-top: 4px;
     padding-left: 0;
 }
 
@@ -16,15 +16,18 @@
     align-items: center;
     width: 100%;
     justify-content: space-between;
+    padding: 0 20px;
 }
 
 .website-name {
     text-align: center;
     flex-grow: 1;
-    padding-top: 8px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 2.5em;
+    margin: 0;
+    padding: 0 20px;
+    margin-right: 185px;
 }
 
 .website-name a {
@@ -82,9 +85,8 @@
 .search-bar-container {
     display: flex;
     align-items: center;
-    position: absolute;
-    left: 10px;
-    top: 10px;
+    margin-right: 20px;
+    flex-grow: 1;
 }
 
 .search-bar-container input {
@@ -162,4 +164,39 @@
 
 .search-results-dropdown a:hover {
     text-decoration: underline;
+}
+
+.auth-button {
+    color: white;
+    /* Match the rest of the navbar */
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: 20px;
+    /* Space between elements */
+    padding: 8px 12px;
+    /* Padding for better click area */
+    border-radius: 5px;
+    /* Add a subtle rounded look */
+    background-color: transparent;
+    /* No background by default */
+    border: 1px solid transparent;
+    /* Invisible border for spacing */
+    transition: all 0.3s ease;
+    /* Smooth hover effect */
+}
+
+.auth-button:hover {
+    background-color: #555;
+    text-decoration: none;
+}
+
+
+.auth-button:visited {
+    color: white;
+    /* For visited links */
+}
+
+.auth-button:active {
+    color: white;
+    /* For active (clicked) links */
 }
