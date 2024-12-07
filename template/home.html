@@ -28,32 +28,42 @@
 
     <!-- Chart Filters -->
     <div id="chart-section">
-        <form id="filter-form" class="filter-form">
-            <select id="type-filter">
-                <option value="song" selected>Song</option>
-                <option value="album">Album</option>
-                <option value="artist">Artist</option>
-            </select>
-
-            <select id="genre-filter">
-                <option value="all" selected>All Genres</option>
-                <option value="rap">Rap</option>
-                <option value="rock">Rock</option>
-                <option value="pop">Pop</option>
-                <!-- Add more genres dynamically if needed -->
-            </select>
-
-            <select id="time-filter">
-                <option value="all" selected>All Time</option>
-                <option value="day">Today</option>
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-            </select>
-        </form>
+        <h1 class="chart-title">Chart</h1>
+        <div id="filter-button" class="filter-button">
+            SONGS / ALL GENRES / TODAY
+        </div>
+        <div id="filter-dropdown" class="filter-dropdown hidden">
+            <div class="filter-column">
+                <h4>Type</h4>
+                <ul>
+                    <li data-type="song">Song</li>
+                    <li data-type="album">Album</li>
+                    <li data-type="artist">Artist</li>
+                    <li data-type="lyric">Lyric</li>
+                </ul>
+            </div>
+            <div class="filter-column">
+                <h4>Genres</h4>
+                <ul>
+                    <li data-genre="all">All</li>
+                    <li data-genre="rap">Rap</li>
+                    <li data-genre="pop">Pop</li>
+                    <li data-genre="rnb">R&B</li>
+                    <li data-genre="country">Country</li>
+                    <li data-genre="rock">Rock</li>
+                </ul>
+            </div>
+            <div class="filter-column">
+                <h4>Time</h4>
+                <ul>
+                    <li data-time="all">All Time</li>
+                    <li data-time="day">Today</li>
+                    <li data-time="week">This Week</li>
+                    <li data-time="month">This Month</li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-
-    <!-- Chart Results -->
     <div id="chart-results" class="chart-container"></div>
 
 
