@@ -42,16 +42,11 @@
 
 /* Chart Title */
 .chart-title {
-    font-size: 5rem;
-    /* Large font size */
+    font-size: 4.5rem;
     font-weight: bold;
-    /* Make the title bold */
     text-align: center;
-    /* Center the title */
     color: #333;
-    /* Choose a color for the title */
     margin-bottom: 0px;
-    /* Add some space below the title */
 }
 
 

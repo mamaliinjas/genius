@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Artist, Album, Song , News
+from .models import Artist, Album, Song , News , Video
 
 # Register your models here.
 class ArtistAdmin(admin.ModelAdmin):
@@ -22,9 +22,15 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter=['published_date' , 'is_featured']
     search_fields=['title']
     
+class VideoAdmin(admin.ModelAdmin):
+    list_display=['title' , 'description' , 'created_at' ]
+    list_filter=['title' , 'embed_code' , 'created_at']
+    search_fields=['title']
+    
 
 
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(Album, AlbumAdmin)
 admin.site.register(Song, SongAdmin)
 admin.site.register(News , NewsAdmin)
+admin.site.register(Video , VideoAdmin)

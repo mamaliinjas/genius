@@ -2,7 +2,7 @@ from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth.models import  User
 from django.contrib import messages
 from django.contrib.auth import login as auth_login , authenticate
-from .models import Artist , Song , Album , News
+from .models import Artist , Song , Album , News , Video
 from django.db.models import Q , Sum
 from django.http import JsonResponse
 from datetime import timedelta , date
@@ -16,9 +16,11 @@ from django.contrib.auth import logout
 def home(request):
     top_news = News.objects.filter(is_featured=True).order_by('-published_date')[:1]
     latest_news = News.objects.filter(is_featured=False).order_by('-published_date')[:4]
+    latest_videos=Video.objects.all().order_by('-created_at')[:3]
     return render(request , 'home.html'  , {
         'top_news' : top_news , 
-        'latest_news' : latest_news
+        'latest_news' : latest_news,
+        'videos' : latest_videos
     })
 
 def ajax_search(request):
@@ -107,6 +109,12 @@ def login(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+def video_section(request):
+    videos = Video.objects.all().order_by('-created_at')
+    return render(request , 'video_section.html' , {
+        'videos' : videos
+    })
     
     
 def artist_profile(request, artist_id):

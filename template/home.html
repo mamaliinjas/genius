@@ -28,7 +28,7 @@
 
     <!-- Chart Filters -->
     <div id="chart-section">
-        <h1 class="chart-title">Chart</h1>
+        <h1 class="chart-title">CHARTS</h1>
         <div id="filter-button" class="filter-button">
             SONGS / ALL GENRES / TODAY
         </div>
@@ -67,10 +67,21 @@
     <div id="chart-results" class="chart-container"></div>
 
 
-
-    <!-- Videos Section (Add this in future) -->
-    <div id="video-section">
-        <h2>Video Section Coming Soon...</h2>
+    <div class="homepage-videos">
+        <h2>Latest Videos</h2>
+        <div class="video-preview-container">
+            {% for video in videos|slice:":3" %} <!-- Display only the first 3 videos -->
+            <div class="video-item">
+                {% if video.embed_code %}
+                {{ video.embed_code|safe }}
+                {% else %}
+                <p>Embed code not available.</p>
+                {% endif %}
+                <h3 class="video-title">{{ video.title }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'video_section' %}" class="explore-videos-link">Explore More Videos</a>
     </div>
 </body>
 

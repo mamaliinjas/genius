@@ -17,6 +17,7 @@ urlpatterns=[
     path('news/' , views.news_section , name='news_section'),
     path('chart_data/', views.chart_section, name='chart_section'),
     path('news/<int:news_id>' , views.news_detail , name='news_detail'),
+    path('video_section/' , views.video_section , name='video_section'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

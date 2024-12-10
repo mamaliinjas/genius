@@ -1,3 +1,45 @@
 html {
     scroll-behavior: smooth;
 }
+
+.homepage-videos {
+    padding: 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.video-preview-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.video-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.video-item iframe {
+    width: 100%;
+    height: 180px;
+    border: none;
+    border-radius: 5px;
+}
+
+.explore-videos-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.explore-videos-link:hover {
+    background-color: #555;
+}

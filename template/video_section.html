@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Section</title>
+    <link rel="stylesheet" href="{% static 'css/video_section.css' %}">
+</head>
+
+<body>
+    <header>
+        <h1>Video Section</h1>
+        <a href="{% url 'home' %}" class="back-to-home">Back to Home</a>
+    </header>
+    <div class="video-container">
+        {% for video in videos %}
+        <div class="video-item">
+            {% if video.embed_code %}
+            {{ video.embed_code|safe }}
+            {% else %}
+            <p>Embed code not available.</p>
+            {% endif %}
+            <h3>{{ video.title }}</h3>
+            <p>{{ video.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
