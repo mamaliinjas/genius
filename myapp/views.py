@@ -124,8 +124,15 @@ def artist_profile(request, artist_id):
         song = get_object_or_404(Song , pk=request.POST['song_id'])
         song.views += 1
         song.save()
-    albums = artist.albums.all().order_by('-release_date')  
-    return render(request, 'artist_profile.html', {'artist': artist, 'albums': albums, 'songs': songs})
+    albums = artist.albums.all().order_by('-release_date') 
+    
+    videos=Video.objects.filter(artist=artist).order_by('-created_at') 
+    return render(request, 'artist_profile.html', {
+        'artist': artist,
+        'albums': albums,
+        'songs': songs,
+        'videos':videos ,
+        })
 
 
 def album_details(request, album_id):

@@ -31,7 +31,7 @@
         <p>{{ artist.bio }}</p>
     </div>
 
-
+    <!-- Song List -->
     <div class="song-list">
         <h2>Top Songs</h2>
         <div class="song-container">
@@ -50,10 +50,9 @@
         </div>
     </div>
 
-    <!-- Albums Section with Box -->
+    <!-- Albums Section -->
     <div class="albums-section">
         <h2>Albums</h2>
-
         {% if albums %}
         <div class="album-box">
             <a href="{% url 'album_details' albums.last.id %}">
@@ -67,6 +66,31 @@
         <p>No albums available</p>
         {% endif %}
     </div>
+
+    <!-- Video Section -->
+    <div class="video-section">
+        <h2>Videos</h2>
+        {% if videos %}
+        <div class="video-container">
+            {% for video in videos %}
+            <div class="video-item">
+                {% if video.embed_code %}
+                <div class="video-embed">
+                    {{ video.embed_code|safe }}
+                </div>
+                {% else %}
+                <p>Embed code not available.</p>
+                {% endif %}
+                <h3 class="video-title">{{ video.title }}</h3>
+                <p class="video-description">{{ video.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No videos available.</p>
+        {% endif %}
+    </div>
+
 </body>
 
 </html>
