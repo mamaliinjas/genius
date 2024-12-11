@@ -54,13 +54,17 @@
     <div class="albums-section">
         <h2>Albums</h2>
         {% if albums %}
-        <div class="album-box">
-            <a href="{% url 'album_details' albums.last.id %}">
-                <div class="album-cover">
-                    <img src="{{ albums.last.cover_photo.url }}" alt="{{ albums.last.title }} Cover">
-                </div>
-                <h3>{{ albums.last.title }}</h3>
-            </a>
+        <div class="album-slider">
+            {% for album in albums %}
+            <div class="album-box">
+                <a href="{% url 'album_details' album.id %}">
+                    <div class="album-cover">
+                        <img src="{{ album.cover_photo.url }}" alt="{{ album.title }} Cover">
+                    </div>
+                    <h3>{{ album.title }}</h3>
+                </a>
+            </div>
+            {% endfor %}
         </div>
         {% else %}
         <p>No albums available</p>

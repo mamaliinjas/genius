@@ -107,8 +107,9 @@ def login(request):
     return render(request, 'login.html') 
    
 def logout_view(request):
+    previous_url=request.META.get('HTTP_REFERER' , 'home')
     logout(request)
-    return redirect('home')
+    return redirect(previous_url)
 
 def video_section(request):
     videos = Video.objects.all().order_by('-created_at')

@@ -12,9 +12,9 @@
 
 <body>
     <header>
-        <h1>Video Section</h1>
-        <a href="{% url 'home' %}" class="back-to-home">Back to Home</a>
+        {% include 'navbar.html' %}
     </header>
+    <h1>Recent Videos</h1>
     <div class="video-container">
         {% for video in videos %}
         <div class="video-item">
@@ -27,6 +27,10 @@
             <p>{{ video.description }}</p>
         </div>
         {% endfor %}
+    </div>
+
+    <div class="back-to-home-container">
+        <a href="{% url 'home' %}" class="back-to-home">Back to Home</a>
     </div>
 </body>
 
