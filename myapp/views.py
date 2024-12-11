@@ -214,7 +214,7 @@ def chart_section(request):
         return JsonResponse({'error': 'invalid type filter'}, status=400)
 
     # Handle genre filtering
-    if genre_filter != 'all' and type_filter in ['song', 'album']:
+    if genre_filter != 'all' and type_filter in ['song', 'album' , 'artist' , 'lyric']:
         queryset = queryset.filter(genre=genre_filter)
 
     # Handle date filtering

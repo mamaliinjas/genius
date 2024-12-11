@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedFilters = { type: "song", genre: "all", time: "all" };
 
     function updateFilterButtonText() {
-        filterButton.textContent = `${selectedFilters.type.toUpperCase()} / ${selectedFilters.genre.toUpperCase()} / ${selectedFilters.time.toUpperCase()
-            }`;
+        filterButton.textContent = `${selectedFilters.type.toUpperCase()} / ${selectedFilters.genre.toUpperCase()} / ${selectedFilters.time.toUpperCase()}`;
     }
 
     function fetchChartData() {
