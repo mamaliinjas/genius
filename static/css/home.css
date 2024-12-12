@@ -2,13 +2,13 @@ html {
     scroll-behavior: smooth;
 }
 
-.homepage-videos {
+.video-section {
     padding: 20px;
     background-color: #f9f9f9;
     text-align: center;
 }
 
-.homepage-videos h2 {
+.video-section h2 {
     font-family: 'arial', sans-serif;
     font-size: 4.5rem;
     font-weight: bold;
