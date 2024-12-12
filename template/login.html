@@ -4,25 +4,37 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %}
-        <label for="login_input">Email or Username:</label>
-        <input type="text" id="login_input" name="login_input" required>
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="login_input">Email or Username:</label>
+                    <input type="text" id="login_input" name="login_input" required placeholder="Enter your email or username">
+                </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
 
-        <button type="submit">Login</button>
-    </form>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
 
-    {% if messages %}
-    {% for message in messages %}
-    <p>{{ message }}</p>
-    {% endfor %}
-    {% endif %}
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <p class="message">{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </body>
 
 </html>

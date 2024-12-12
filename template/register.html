@@ -1,25 +1,50 @@
-<h2>Register</h2>
-<form method="POST">
-    {% csrf_token %}
-    <label for="username">Username</label>
-    <input type="text" name="username" id="username" value="{{ username }}" required>
+{% load static %}
+<html lang="en">
 
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" value="{{ email }}" required>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
 
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Create Your Account</h2>
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter your username">
+                </div>
 
-    <label for="password2">Confirm Password</label>
-    <input type="password" name="password2" id="password2" required>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
 
-    <button type="submit">Register</button>
-</form>
+                <div class="form-group">
+                    <label for="password1">Password:</label>
+                    <input type="password" id="password1" name="password1" required placeholder="Create a password">
+                </div>
 
-{% if messages %}
-<ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+                <div class="form-group">
+                    <label for="password2">Confirm Password:</label>
+                    <input type="password" id="password2" name="password2" required placeholder="Confirm your password">
+                </div>
+
+                <button type="submit" class="btn-primary">Register</button>
+            </form>
+
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <p class="message">{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>
