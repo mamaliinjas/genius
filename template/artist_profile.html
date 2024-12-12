@@ -38,13 +38,13 @@
             {% for song in songs %}
             <div class="song-box">
                 <img src="{{ song.album.cover_photo.url }}" alt="{{ song.title }} Cover" class="song-cover">
-                <p><strong>{{ song.title }}</strong></p>
-                <p>{{ song.artist.name }}</p>
+                <p class="song-title"><strong>{{ song.title }}</strong></p>
+                <p class="song-artist">{{ song.artist.name }}</p>
                 <form method="POST" action="{% url 'artist_profile' artist.id %}">
                     {% csrf_token %}
                     <button type="submit" name="song_id" value="{{ song.id }}">Play</button>
                 </form>
-                <p>Views: {{ song.views }}</p>
+                <p class="views-text">Views: {{ song.views }}</p>
             </div>
             {% endfor %}
         </div>
