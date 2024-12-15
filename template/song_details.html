@@ -1,50 +1,81 @@
 {% load static %}
 
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ song.title }} - {{ song.artist.name }}</title>
+    <title>{{ song.title }} - Details</title>
     <link rel="stylesheet" href="{% static 'css/song_details.css' %}">
 </head>
 
 <body>
-    <!-- Include Navbar -->
-    {% include 'navbar.html' %}
-    <!-- Gradient Background Section -->
-    <div class="background"
-        style="background: linear-gradient(to bottom, {{ dominant_color }} 0%, rgba(0, 0, 0, 0.7) 100%);">
-    </div>
+    <header>
+        {% include 'navbar.html' %}
+    </header>
 
-    <!-- Main content container -->
-    <div class="song-details">
-        <!-- Song Description Section (on the left) -->
-        <div class="song-description-container">
-            <h1 class="song-title">{{ song.title }}</h1>
-            <p class="song-artist">By <a href="/artist/{{ song.artist.id }}/">{{ song.artist.name }}</a></p>
-            <p class="song-description">{{ song.description }}</p>
+    <div class="song-details-container">
+        <div class="song-info">
+            <img src="{{ song.song_cover.url }}" alt="{{ song.title }} Cover" class="song-cover">
+            <h1>{{ song.title }}</h1>
+            <h2>By {{ song.artist.name }}</h2>
+            <p>Duration: {{ song.duration }}</p>
+            <p>Release Date: {{ song.release_date }}</p>
+            <audio id="song-audio" controls>
+                <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
         </div>
 
-        <!-- Song Cover Section (on the right) -->
-        <div class="song-cover-container">
-            <img class="song-cover" src="{{ song.song_cover.url }}" alt="Song Cover">
+        <div class="song-audio-container">
+            {% if song.audio_file and song.audio_file.url %}
+            <audio id="song-audio" controls>
+                <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            {% else %}
+            <p>No audio file available for this song.</p>
+            {% endif %}
         </div>
-    </div>
-
-    <!-- Lyrics Section -->
-    <div class="song-lyrics-section">
-        <div class="lyrics-container">
+        <div class="lyrics-section">
             <h2>Lyrics</h2>
-            <div class="lyrics">
-                <p>{% for line in song.lyrics.splitlines %}
-                    {{ line }}<br>
-                    {% endfor %}
-                </p>
+            <div class="lyrics-container">
+                {% for line in lyrics %}
+                <div class="lyric-line-container">
+                    <p class="lyric-line" data-timestamp="{{ line.timestamp|date:'H:i:s' }}">
+                        {{ line.line_text }}
+                    </p>
+                    {% if line.meaning %}
+                    <p class="lyric-meaning">
+                        <em>Meaning:</em> {{ line.meaning }}
+                    </p>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
+
+
+    <script>
+        const audio = document.getElementById('song-audio');
+        const lyricLines = document.querySelectorAll('.lyric-line');
+
+        audio.addEventListener('timeupdate', () => {
+            const currentTime = audio.currentTime; // Current time in seconds
+            lyricLines.forEach(line => {
+                const timestamp = line.getAttribute('data-timestamp').split(':');
+                const lineTime = parseInt(timestamp[0]) * 3600 + parseInt(timestamp[1]) * 60 + parseFloat(timestamp[2]);
+                if (currentTime >= lineTime) {
+                    line.classList.add('highlight');
+                } else {
+                    line.classList.remove('highlight');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

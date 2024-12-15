@@ -2,7 +2,7 @@ from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth.models import  User
 from django.contrib import messages
 from django.contrib.auth import login as auth_login , authenticate
-from .models import Artist , Song , Album , News , Video
+from .models import Artist , Song , Album , News , Video , LyricLine
 from django.db.models import Q , Sum
 from django.http import JsonResponse
 from datetime import timedelta , date
@@ -11,8 +11,64 @@ from colorthief import ColorThief
 from django.conf import settings
 import os
 from django.contrib.auth import logout
+import requests
 
 # Create your views here.
+SPOTIFY_CLIENT_ID='82b8a20a9bfb48b0a2eaf86682819151'
+SPOTIFY_CLIENT_SECRET='7d4a43b5a12b4dfb99067e1e88a6e824'
+SPOTIFY_REDIRECT_URI='http://localhost:8000/callback/'
+
+def spotify_login(request):
+    auth_url=(
+        f"https://accounts.spotify.com/authorize"
+        f"?response_type=code"
+        f"&client_id={SPOTIFY_CLIENT_ID}"
+        f"&redirect_uri={SPOTIFY_REDIRECT_URI}"
+        f"&scope=user-library-read user-read-private"
+    )
+    return redirect (auth_url)
+
+
+def spotify_callback(request):
+    code=request.GET.get('code')
+    token_url = "https://accounts.spotify.com/api/token" 
+    response=requests.post(
+        token_url ,
+        data={
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': SPOTIFY_REDIRECT_URI,
+            'client_id': SPOTIFY_CLIENT_ID,
+            'client_secret': SPOTIFY_CLIENT_SECRET,
+        },
+    )
+    
+    tokens=response.json()
+    access_token= tokens['access_token']
+    refresh_token=tokens['refresh_token'] 
+    
+    request.session['spotify_access_token'] = access_token
+    request.session['spotify_refresh_token'] = refresh_token
+    
+    return redirect('home')
+
+
+def get_user_playlists(request):
+    access_token = request.session.get('spotify_access_token')
+    if not access_token:
+        return redirect('spotify_login')  # If not logged in, redirect to login
+    
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    playlists_url = 'https://api.spotify.com/v1/me/playlists'
+    response = requests.get(playlists_url, headers=headers)
+    playlists = response.json()
+    
+    return render(request, 'playlists.html', {'playlists': playlists})
+
+
+
 def home(request):
     top_news = News.objects.filter(is_featured=True).order_by('-published_date')[:1]
     latest_news = News.objects.filter(is_featured=False).order_by('-published_date')[:4]
@@ -144,6 +200,7 @@ def album_details(request, album_id):
 
 def song_details(request, song_id):
     song = get_object_or_404(Song, id=song_id)
+    lyrics = song.lyric_lines.order_by('timestamp')
     dominant_color = (0, 0, 0)  # Default black color
 
     # Check if song has a valid cover
@@ -160,6 +217,7 @@ def song_details(request, song_id):
     return render(request, 'song_details.html', {
         'song': song,
         'dominant_color': f'rgb{dominant_color}',
+        'lyrics' : lyrics,
     })
 
 def news_section(request):

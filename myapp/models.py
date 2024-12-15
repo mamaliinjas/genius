@@ -98,4 +98,10 @@ class News(models.Model):
     def __st__(self):
         return self.title
     
-    
+class LyricLine(models.Model):
+    song=models.ForeignKey(Song , on_delete=models.CASCADE ,related_name='lyric_lines')
+    line_text=models.TextField()
+    timestamp=models.TimeField(help_text="Time when the line starts in the song (HH:MM:SS)")
+    meaning=models.TextField(null=True , blank=True , help_text="Optional: Explanation or meaning of the lyric")
+    def __str__(self):
+        return f"{self.song.title} - {self.line_text[:30]}"
