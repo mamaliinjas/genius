@@ -19,7 +19,7 @@ urlpatterns=[
     path('news/<int:news_id>' , views.news_detail , name='news_detail'),
     path('video_section/' , views.video_section , name='video_section'),
     path('spotify/login/' , views.spotify_login , name='spotify_login'),
-    path('callback/' , views.spotify_callback , name='spotify_callback'),
+    path('spotify/callback/' , views.spotify_callback , name='spotify_callback'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

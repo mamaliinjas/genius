@@ -5,52 +5,65 @@ from django.contrib.auth import login as auth_login , authenticate
 from .models import Artist , Song , Album , News , Video , LyricLine
 from django.db.models import Q , Sum
 from django.http import JsonResponse
-from datetime import timedelta , date
+from datetime import timedelta , date ,time
 import json
 from colorthief import ColorThief
 from django.conf import settings
 import os
 from django.contrib.auth import logout
 import requests
+import urllib.parse
 
 # Create your views here.
 SPOTIFY_CLIENT_ID='82b8a20a9bfb48b0a2eaf86682819151'
 SPOTIFY_CLIENT_SECRET='7d4a43b5a12b4dfb99067e1e88a6e824'
-SPOTIFY_REDIRECT_URI='http://localhost:8000/callback/'
+SPOTIFY_REDIRECT_URI='http://127.0.0.1:8000/spotify/callback/'
 
 def spotify_login(request):
-    auth_url=(
-        f"https://accounts.spotify.com/authorize"
-        f"?response_type=code"
-        f"&client_id={SPOTIFY_CLIENT_ID}"
-        f"&redirect_uri={SPOTIFY_REDIRECT_URI}"
-        f"&scope=user-library-read user-read-private"
-    )
+    SPOTIFY_AUTH_URL="https://accounts.spotify.com/authorize"
+    client_id=settings.SPOTIFY_CLIENT_ID
+    redirect_uri=settings.SPOTIFY_REDIRECT_URI
+    scope="user-read-private user-library-read streaming"
+    
+    query_params={
+        "response_type" : "code" ,
+        "client_id"  : client_id ,
+        "redirect_uri" : redirect_uri ,
+        "scope" : scope ,   
+    }
+    auth_url = f"{SPOTIFY_AUTH_URL}?{urllib.parse.urlencode(query_params)}"
     return redirect (auth_url)
 
 
 def spotify_callback(request):
     code=request.GET.get('code')
+    if not code:
+        return redirect ('login')
     token_url = "https://accounts.spotify.com/api/token" 
-    response=requests.post(
-        token_url ,
-        data={
+    payload={
             'grant_type': 'authorization_code',
             'code': code,
             'redirect_uri': SPOTIFY_REDIRECT_URI,
             'client_id': SPOTIFY_CLIENT_ID,
             'client_secret': SPOTIFY_CLIENT_SECRET,
-        },
-    )
+            }
+    response=requests.post(token_url , data=payload)
     
-    tokens=response.json()
-    access_token= tokens['access_token']
-    refresh_token=tokens['refresh_token'] 
+    tokens_info=response.json()
+    
+    access_token= tokens_info.get('access_token')
+    if not access_token:
+        return redirect ('login')
+    
+    
+    refresh_token=tokens_info.get('refresh_token') 
     
     request.session['spotify_access_token'] = access_token
     request.session['spotify_refresh_token'] = refresh_token
+    requests.session['expires_at'] =time.time() +tokens_info.get("expires_at" , 3600)
     
     return redirect('home')
+
 
 
 def get_user_playlists(request):
