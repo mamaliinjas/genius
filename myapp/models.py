@@ -24,24 +24,77 @@ class Video(models.Model):
 
 
 
-def validate_cover_image(image):
-   img=Image.open(image)
-   width , height = img.size
-   if width != 1920:
-        raise ValidationError("Cover image width must be 1920px.")
 
-   if not (400 <= height <= 1080):
-        raise ValidationError(
-            "Cover image height must be between 400px and 1080px."
-        )
+
+def crop_and_resize(image_path, output_size=(1080, 720), crop_coords=None):
+    with Image.open(image_path) as img:
+        # Crop the image based on user-provided coordinates
+        if crop_coords:
+            img = img.crop(crop_coords)  # crop_coords: (left, upper, right, lower)
+
+        # Get original image size
+        original_width, original_height = img.size
+        target_width, target_height = output_size
+
+        # Calculate aspect ratio
+        aspect_ratio = original_width / original_height
+
+        # Resize the image based on the target size while maintaining the aspect ratio
+        if original_width > original_height:
+            # If the image is wider than it is tall
+            new_width = target_width
+            new_height = int(target_width / aspect_ratio)
+        else:
+            # If the image is taller than it is wide
+            new_height = target_height
+            new_width = int(target_height * aspect_ratio)
+
+        # Ensure that the new size doesn't exceed the target size
+        if new_width > target_width:
+            new_width = target_width
+            new_height = int(target_width / aspect_ratio)
+
+        if new_height > target_height:
+            new_height = target_height
+            new_width = int(target_height * aspect_ratio)
+
+        # Resize the image while preserving aspect ratio
+        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+        # Save the modified image back to the same file
+        img.save(image_path)
+
 class Artist(models.Model):
-    name=models.CharField(max_length=100)
-    bio=models.TextField()
-    profile_picture=models.ImageField(upload_to='artist_profiles/')
-    cover_picture=models.ImageField(upload_to='artist_covers/' , validators=[validate_cover_image] , null=True , blank=True)
-    aka=models.CharField(max_length=200 , null=True , blank=True)
-    views=models.PositiveBigIntegerField(default=0)
-    genre=models.CharField(max_length=20 , choices=GENRE_CHOICES , null=True , blank=True)
+    name = models.CharField(max_length=100)
+    bio = models.TextField()
+    profile_picture = models.ImageField(upload_to='artist_profiles/')
+    cover_picture = models.ImageField(upload_to='artist_covers/', null=True, blank=True)
+    aka = models.CharField(max_length=200, null=True, blank=True)
+    views = models.PositiveBigIntegerField(default=0)
+    genre = models.CharField(max_length=20, choices=GENRE_CHOICES, null=True, blank=True)
+    crop_coords = models.CharField(
+        max_length=50, 
+        null=True, 
+        blank=True,
+        help_text="Enter crop coordinates as 'left,upper,right,lower' (e.g., 100,50,800,600). Leave blank for default cropping."
+    )
+    
+    def save(self, *args, **kwargs):
+        # Save the instance first (so the image is stored before modifying it)
+        super().save(*args, **kwargs)
+
+        # If a cover picture exists, crop and resize it
+        if self.cover_picture:
+            cover_path = self.cover_picture.path
+
+            crop_coords = None
+            # If crop coordinates are provided, split them into a tuple
+            if self.crop_coords:
+                crop_coords = tuple(map(int, self.crop_coords.split(',')))
+
+            # Call the function to crop and resize the image
+            crop_and_resize(cover_path, crop_coords=crop_coords)
+    
     def __str__(self):
         return self.name
     
