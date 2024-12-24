@@ -15,8 +15,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     
-    # Use your specific IP address to listen on
-    execute_from_command_line(['manage.py', 'runserver', '194.5.205.18:8000'])
+    execute_from_command_line(['manage.py', 'runserver', '0.0.0.0:8000'])
 
 if __name__ == '__main__':
     main()
