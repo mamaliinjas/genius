@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'mygenius.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'radif',
+        'USER' : 'radif' ,
+        'PASSWORD' : 'radif44054405' ,
+        'HOST' : '194.5.205.18' ,
+        'PORT' : '5432' ,
     }
 }
 

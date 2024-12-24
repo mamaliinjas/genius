@@ -3,7 +3,6 @@
 import os
 import sys
 
-
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mygenius.settings')
@@ -15,8 +14,9 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    execute_from_command_line(sys.argv)
-
+    
+    # Use your specific IP address to listen on
+    execute_from_command_line(['manage.py', 'runserver', '194.5.205.18:8000'])
 
 if __name__ == '__main__':
     main()
