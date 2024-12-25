@@ -140,3 +140,15 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Use the database for session storage
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Database-backed sessions
+
+# Optionally, set a session cookie age (default is 300 seconds)
+SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
+
+# Set the session cookie name (default is 'sessionid')
+SESSION_COOKIE_NAME = 'my_session_cookie'
+
+# Session cookie will be set only on secure connections
+SESSION_COOKIE_SECURE = True  # Use this for HTTPS
