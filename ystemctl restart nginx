@@ -1,0 +1,20 @@
+[0;1;32m●[0m gunicorn.service - gunicorn daemon for mygenius project
+     Loaded: loaded (]8;;file://srv5733729426/etc/systemd/system/gunicorn.service/etc/systemd/system/gunicorn.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Thu 2024-12-26 17:39:52 UTC; 7s ago
+   Main PID: 39927 (gunicorn)
+      Tasks: 4 (limit: 2320)
+     Memory: 105.1M (peak: 105.3M)
+        CPU: 1.243s
+     CGroup: /system.slice/gunicorn.service
+             ├─[0;38;5;245m39927 /srv/mygenius/genius/venv/bin/python3 /srv/mygenius/genius/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/srv/mygenius/genius/mygenius.sock mygenius.wsgi:application[0m
+             ├─[0;38;5;245m39928 /srv/mygenius/genius/venv/bin/python3 /srv/mygenius/genius/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/srv/mygenius/genius/mygenius.sock mygenius.wsgi:application[0m
+             ├─[0;38;5;245m39929 /srv/mygenius/genius/venv/bin/python3 /srv/mygenius/genius/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/srv/mygenius/genius/mygenius.sock mygenius.wsgi:application[0m
+             └─[0;38;5;245m39930 /srv/mygenius/genius/venv/bin/python3 /srv/mygenius/genius/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/srv/mygenius/genius/mygenius.sock mygenius.wsgi:application[0m
+
+Dec 26 17:39:52 srv5733729426 systemd[1]: Started gunicorn.service - gunicorn daemon for mygenius project.
+Dec 26 17:39:53 srv5733729426 gunicorn[39927]: [2024-12-26 17:39:53 +0000] [39927] [INFO] Starting gunicorn 23.0.0
+Dec 26 17:39:53 srv5733729426 gunicorn[39927]: [2024-12-26 17:39:53 +0000] [39927] [INFO] Listening at: unix:/srv/mygenius/genius/mygenius.sock (39927)
+Dec 26 17:39:53 srv5733729426 gunicorn[39927]: [2024-12-26 17:39:53 +0000] [39927] [INFO] Using worker: sync
+Dec 26 17:39:53 srv5733729426 gunicorn[39928]: [2024-12-26 17:39:53 +0000] [39928] [INFO] Booting worker with pid: 39928
+Dec 26 17:39:53 srv5733729426 gunicorn[39929]: [2024-12-26 17:39:53 +0000] [39929] [INFO] Booting worker with pid: 39929
+Dec 26 17:39:53 srv5733729426 gunicorn[39930]: [2024-12-26 17:39:53 +0000] [39930] [INFO] Booting worker with pid: 39930
