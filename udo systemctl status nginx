@@ -1,0 +1,18 @@
+○ gunicorn.service - gunicorn daemon for mygenius project
+     Loaded: loaded (]8;;file://srv5733729426/etc/systemd/system/gunicorn.service/etc/systemd/system/gunicorn.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: inactive (dead) since Thu 2024-12-26 18:41:07 UTC; 1min 22s ago
+   Duration: 1h 1min 14.642s
+    Process: 39927 ExecStart=/srv/mygenius/genius/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/srv/mygenius/genius/mygenius.sock mygenius.wsgi:application (code=exited, status=0/SUCCESS)
+   Main PID: 39927 (code=exited, status=0/SUCCESS)
+        CPU: 3.304s
+
+Dec 26 18:10:39 srv5733729426 gunicorn[39930]:  - - [26/Dec/2024:18:10:39 +0000] "GET /payment/index.php HTTP/1.0" 404 6377 "-" "Mozilla/5.0 (Linux; Android 4.4.4; XT1080 Build/SU6-7.7) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/33.0.0.0 Mobile Safari/537.36 [FB_IAB/FB4A;FBAV/76.0.0.24.67;]"
+Dec 26 18:20:35 srv5733729426 gunicorn[39929]: Not Found: /owa/auth/x.js
+Dec 26 18:20:35 srv5733729426 gunicorn[39929]:  - - [26/Dec/2024:18:20:35 +0000] "GET /owa/auth/x.js HTTP/1.0" 404 6363 "-" "Mozilla/5.0 zgrab/0.x"
+Dec 26 18:41:07 srv5733729426 gunicorn[39928]: [2024-12-26 18:41:07 +0000] [39928] [INFO] Worker exiting (pid: 39928)
+Dec 26 18:41:07 srv5733729426 gunicorn[39929]: [2024-12-26 18:41:07 +0000] [39929] [INFO] Worker exiting (pid: 39929)
+Dec 26 18:41:07 srv5733729426 gunicorn[39930]: [2024-12-26 18:41:07 +0000] [39930] [INFO] Worker exiting (pid: 39930)
+Dec 26 18:41:07 srv5733729426 gunicorn[39927]: [2024-12-26 18:41:07 +0000] [39927] [INFO] Handling signal: term
+Dec 26 18:41:07 srv5733729426 gunicorn[39927]: [2024-12-26 18:41:07 +0000] [39927] [INFO] Shutting down: Master
+Dec 26 18:41:07 srv5733729426 systemd[1]: gunicorn.service: Deactivated successfully.
+Dec 26 18:41:07 srv5733729426 systemd[1]: gunicorn.service: Consumed 3.304s CPU time, 121.9M memory peak, 0B memory swap peak.

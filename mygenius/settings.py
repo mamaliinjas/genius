@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'mygenius.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Your database name
-        'USER': 'postgres',  # Your PostgreSQL user
-        'PASSWORD': 'postgrespass',  # The password for your PostgreSQL user
+        'NAME': 'myradifdb',  # Your database name
+        'USER': 'myradifuser',  # Your PostgreSQL user
+        'PASSWORD': 'myradifpassword',  # The password for your PostgreSQL user
         'HOST': 'localhost',  # The IP of your PostgreSQL server
         'PORT': '5432',  # Default PostgreSQL port
     }
