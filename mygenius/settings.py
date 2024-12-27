@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ch0r=))%vud66p10vj%r98lgjtx!j79%x@pks$_9pjuv%4q=(d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['194.5.205.18', 'localhost', '127.0.0.1', 'ra-dif.com', 'www.ra-dif.com']
 
@@ -81,11 +81,11 @@ WSGI_APPLICATION = 'mygenius.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myradifdb',  # Your database name
-        'USER': 'myradifuser',  # Your PostgreSQL user
-        'PASSWORD': 'myradifpassword',  # The password for your PostgreSQL user
-        'HOST': 'localhost',  # The IP of your PostgreSQL server
-        'PORT': '5432',  # Default PostgreSQL port
+        'NAME': 'myradifdb',
+        'USER': 'myradifuser',
+        'PASSWORD': 'myradifpassword',
+        'HOST': 'localhost',
+        'PORT': '5432', 
     }
 }
 
