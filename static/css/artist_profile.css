@@ -56,6 +56,14 @@ body {
     transform: translateX(-50%);
 }
 
+.artist-bio {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
 .song-container {
     display: flex;
     flex-direction: column;
@@ -237,4 +245,38 @@ button:hover {
 .video-description {
     font-size: 14px;
     color: #666;
+}
+
+.social-media-links {
+    margin-top: 20px;
+}
+
+.social-link {
+    margin-right: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.social-link.twitter {
+    color: #1DA1F2;
+    /* Twitter color */
+}
+
+.social-link.instagram {
+    color: #C13584;
+    /* Instagram color */
+}
+
+.social-link.soundcloud {
+    color: #FF6600;
+    /* SoundCloud color */
+}
+
+.social-link.spotify {
+    color: #1DB954;
+    /* Spotify color */
+}
+
+.social-link:hover {
+    text-decoration: underline;
 }

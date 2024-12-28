@@ -29,6 +29,22 @@
         <p><strong>AKA:</strong> {{ artist.aka }}</p>
         {% endif %}
         <p>{{ artist.bio }}</p>
+
+        <!-- Social Media Links -->
+        <div class="social-media-links">
+            {% if artist.twitter %}
+            <a href="{{ artist.twitter }}" class="social-link twitter" target="_blank">Twitter</a>
+            {% endif %}
+            {% if artist.instagram %}
+            <a href="{{ artist.instagram }}" class="social-link instagram" target="_blank">Instagram</a>
+            {% endif %}
+            {% if artist.soundcloud %}
+            <a href="{{ artist.soundcloud }}" class="social-link soundcloud" target="_blank">SoundCloud</a>
+            {% endif %}
+            {% if artist.spotify %}
+            <a href="{{ artist.spotify }}" class="social-link spotify" target="_blank">Spotify</a>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Song List -->
