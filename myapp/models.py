@@ -73,7 +73,6 @@ class Artist(models.Model):
     instagram = models.URLField(null=True, blank=True)
     soundcloud = models.URLField(null=True, blank=True)
     spotify = models.URLField(null=True, blank=True)
-
     
     def save(self, *args, **kwargs):
 

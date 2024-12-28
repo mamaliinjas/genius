@@ -3,8 +3,8 @@ from .models import Artist, Album, Song , News , Video , LyricLine
 
 # Register your models here.
 class ArtistAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'bio' , 'aka']
-    list_display = ['name', 'bio', 'profile_picture' , 'aka']
+    search_fields = ['name', 'bio', 'aka', 'twitter', 'soundcloud', 'spotify', 'instagram']
+    list_display = ['name', 'bio', 'profile_picture', 'aka', 'twitter', 'instagram', 'soundcloud', 'spotify']
     list_filter = ['name']
 
 class AlbumAdmin(admin.ModelAdmin):
