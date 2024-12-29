@@ -208,6 +208,8 @@ def artist_profile(request, artist_id):
 def album_details(request, album_id):
     album = get_object_or_404(Album, pk=album_id)
     songs_in_album = album.songs.all()
+    album.views += 1
+    album.save()
     return render(request, 'album_details.html', {'album': album, 'songs_in_album': songs_in_album})
 
 
