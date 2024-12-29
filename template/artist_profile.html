@@ -44,6 +44,12 @@
             {% if artist.spotify %}
             <a href="{{ artist.spotify }}" class="social-link spotify" target="_blank">Spotify</a>
             {% endif %}
+            {% if artist.youtube %}
+            <a href="{{ artist.youtube }}" class="social-link youtube" target="_blank">YouTube</a>
+            {% endif %}
+            {% if artist.telegram %}
+            <a href="{{ artist.telegram }}" class="social-link telegram" target="_blank">Telegram</a>
+            {% endif %}
         </div>
     </div>
 
