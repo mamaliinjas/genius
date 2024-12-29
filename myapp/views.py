@@ -13,6 +13,8 @@ import os
 from django.contrib.auth import logout
 import requests
 import urllib.parse
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 # Create your views here.
 SPOTIFY_CLIENT_ID='82b8a20a9bfb48b0a2eaf86682819151'
@@ -212,11 +214,25 @@ def album_details(request, album_id):
 
 
 def song_details(request, song_id):
+    # Get the song object
     song = get_object_or_404(Song, id=song_id)
+    
+    # Increment the song's view count
+    song.views += 1
+    song.save()
+    
+    # Increment the artist's view count
+    artist = song.artist
+    artist.views += 1
+    artist.save()
+    
+    # Retrieve the lyrics for the song
     lyrics = song.lyric_lines.order_by('timestamp')
+    
+    # Set a default dominant color for the song's cover
     dominant_color = (0, 0, 0)  # Default black color
 
-    # Check if song has a valid cover
+    # Check if the song has a valid cover and calculate the dominant color
     song_cover_path = song.song_cover.path if song.song_cover else None
     if song_cover_path and os.path.isfile(song_cover_path):
         try:
@@ -227,10 +243,11 @@ def song_details(request, song_id):
     else:
         print("Song cover not found or invalid.")
 
+    # Render the song details template with the relevant data
     return render(request, 'song_details.html', {
         'song': song,
         'dominant_color': f'rgb{dominant_color}',
-        'lyrics' : lyrics,
+        'lyrics': lyrics,
     })
 
 def news_section(request):

@@ -111,7 +111,6 @@ class Song(models.Model):
     artist=models.ForeignKey('Artist' , on_delete=models.CASCADE , related_name='songs')
     title=models.CharField(max_length=200)
     duration=models.DurationField()
-    audio_file=models.FileField(upload_to='songs/' , blank=True , null=True)
     lyrics = models.TextField(blank=True, null=True)
     album = models.ForeignKey('Album', on_delete=models.CASCADE, related_name='songs', blank=True, null=True)
     views=models.PositiveIntegerField(default=0)

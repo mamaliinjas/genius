@@ -62,6 +62,7 @@
                 <img src="{{ song.album.cover_photo.url }}" alt="{{ song.title }} Cover" class="song-cover">
                 <p class="song-title"><strong>{{ song.title }}</strong></p>
                 <p class="song-artist">{{ song.artist.name }}</p>
+                <p class="views-text">Views: {{ song.views }}</p>
                 <form method="POST" action="{% url 'artist_profile' artist.id %}">
                     {% csrf_token %}
                     <button type="submit" name="song_id" value="{{ song.id }}">Play</button>
