@@ -152,23 +152,18 @@ def album_details(request, album_id):
 
 
 def song_details(request, song_id):
-    # Get the song object
     song = get_object_or_404(Song, id=song_id)
     
-    # Increment the song's view count
     song.views += 1
     song.save()
     
-    # Increment the artist's view count
     artist = song.artist
     artist.views += 1
     artist.save()
     
     
-    # Retrieve the lyrics for the song
     lyrics = song.lyric_lines.order_by('timestamp')
     
-    # Set a default dominant color for the song's cover
     dominant_color = (0, 0, 0)  # Default black color
 
     # Check if the song has a valid cover and calculate the dominant color

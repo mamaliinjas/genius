@@ -59,12 +59,15 @@
         <ul class="song-container">
             {% for song in songs %}
             <li class="song-box">
-                <img src="{{ song.album.cover_photo.url }}" alt="{{ song.title }} Cover" class="song-cover">
-                <div class="song-details">
-                    <p><strong>{{ song.title }}</strong></p>
-                    <p>Artist: {{ song.artist.name }}</p>
-                    <p>Views: {{ song.views }}</p>
-                </div>
+                <!-- Wrap the song details in a link -->
+                <a href="{% url 'song_details' song.id %}">
+                    <img src="{{ song.album.cover_photo.url }}" alt="{{ song.title }} Cover" class="song-cover">
+                    <div class="song-details">
+                        <p><strong>{{ song.title }}</strong></p>
+                        <p>Artist: {{ song.artist.name }}</p>
+                        <p>Views: {{ song.views }}</p>
+                    </div>
+                </a>
             </li>
             {% endfor %}
         </ul>
