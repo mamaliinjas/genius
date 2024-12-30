@@ -2,8 +2,17 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from PIL import Image , ImageOps
 from django.utils.timezone import now
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from django.conf import settings
+
 
 # Create your models here.
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(
+    client_id=settings.SPOTIPY_CLIENT_ID,
+    client_secret=settings.SPOTIPY_CLIENT_SECRET
+))
+
 GENRE_CHOICES=[
     ('rap' , 'Rap'),
     ('pop' , 'Pop'),
@@ -61,6 +70,8 @@ class Artist(models.Model):
     profile_picture = models.ImageField(upload_to='artist_profiles/')
     cover_picture = models.ImageField(upload_to='artist_covers/', null=True, blank=True)
     aka = models.CharField(max_length=200, null=True, blank=True)
+    spotify_id=models.CharField(max_length=250 , null=True ,  blank=True)
+    monthly_listeners = models.IntegerField(default=0)
     views = models.PositiveBigIntegerField(default=0)
     genre = models.CharField(max_length=20, choices=GENRE_CHOICES, null=True, blank=True)
     crop_coords = models.CharField(
@@ -75,6 +86,15 @@ class Artist(models.Model):
     spotify = models.URLField(null=True, blank=True)
     youtube=models.URLField(null=True , blank=True)
     telegram=models.URLField(null=True , blank=True)
+    
+    def get_monthly_listeners(self):
+        """Method to get artist's monthly listeners from Spotify"""
+        try:
+            artist_data = sp.artist(self.spotify_id)
+            return artist_data['followers']['total']  # Return the total monthly listeners
+        except Exception as e:
+            print(f"Error fetching artist data: {e}")
+            return None    
     
     def save(self, *args, **kwargs):
 
@@ -116,8 +136,7 @@ class Song(models.Model):
     views=models.PositiveIntegerField(default=0)
     release_date=models.DateField(blank=True, null=True)
     genre=models.CharField(max_length=20 , choices=GENRE_CHOICES , null=True, blank=True)
-    song_cover= models.ImageField(upload_to='song_covers/', null=True, blank=True) 
-    
+    song_cover= models.ImageField(upload_to='song_covers/', null=True, blank=True)    
     def __str__(self):
         return self.title
     

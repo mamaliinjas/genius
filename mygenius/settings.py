@@ -153,3 +153,7 @@ SESSION_COOKIE_NAME = 'my_session_cookie'
 
 # Session cookie will be set only on secure connections
 SESSION_COOKIE_SECURE = True  # Use this for HTTPS
+
+SPOTIPY_CLIENT_ID = '82b8a20a9bfb48b0a2eaf86682819151'
+SPOTIPY_CLIENT_SECRET = '7d4a43b5a12b4dfb99067e1e88a6e824'
+SPOTIPY_REDIRECT_URI = 'https://ra-dif.com/spotify/callback'

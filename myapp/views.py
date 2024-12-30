@@ -6,84 +6,15 @@ from .models import Artist , Song , Album , News , Video , LyricLine
 from django.db.models import Q , Sum
 from django.http import JsonResponse
 from datetime import timedelta , date ,time
-import json
 from colorthief import ColorThief
 from django.conf import settings
-import os
+import os ,json  , requests , urllib.parse
 from django.contrib.auth import logout
-import requests
-import urllib.parse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
 # Create your views here.
-SPOTIFY_CLIENT_ID='82b8a20a9bfb48b0a2eaf86682819151'
-SPOTIFY_CLIENT_SECRET='7d4a43b5a12b4dfb99067e1e88a6e824'
-SPOTIFY_REDIRECT_URI='http://127.0.0.1:8000/spotify/callback/'
 
-def spotify_login(request):
-    SPOTIFY_AUTH_URL="https://accounts.spotify.com/authorize"
-    client_id=settings.SPOTIFY_CLIENT_ID
-    redirect_uri=settings.SPOTIFY_REDIRECT_URI
-    scope="user-read-private user-library-read streaming"
     
-    query_params={
-        "response_type" : "code" ,
-        "client_id"  : client_id ,
-        "redirect_uri" : redirect_uri ,
-        "scope" : scope ,   
-    }
-    auth_url = f"{SPOTIFY_AUTH_URL}?{urllib.parse.urlencode(query_params)}"
-    return redirect (auth_url)
-
-
-def spotify_callback(request):
-    code=request.GET.get('code')
-    if not code:
-        return redirect ('login')
-    token_url = "https://accounts.spotify.com/api/token" 
-    payload={
-            'grant_type': 'authorization_code',
-            'code': code,
-            'redirect_uri': SPOTIFY_REDIRECT_URI,
-            'client_id': SPOTIFY_CLIENT_ID,
-            'client_secret': SPOTIFY_CLIENT_SECRET,
-            }
-    response=requests.post(token_url , data=payload)
-    
-    tokens_info=response.json()
-    
-    access_token= tokens_info.get('access_token')
-    if not access_token:
-        return redirect ('login')
-    
-    
-    refresh_token=tokens_info.get('refresh_token') 
-    
-    request.session['spotify_access_token'] = access_token
-    request.session['spotify_refresh_token'] = refresh_token
-    requests.session['expires_at'] =time.time() +tokens_info.get("expires_at" , 3600)
-    
-    return redirect('home')
-
-
-
-def get_user_playlists(request):
-    access_token = request.session.get('spotify_access_token')
-    if not access_token:
-        return redirect('spotify_login')  # If not logged in, redirect to login
-    
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
-    playlists_url = 'https://api.spotify.com/v1/me/playlists'
-    response = requests.get(playlists_url, headers=headers)
-    playlists = response.json()
-    
-    return render(request, 'playlists.html', {'playlists': playlists})
-
-
-
 def home(request):
     top_news = News.objects.filter(is_featured=True).order_by('-published_date')[:1]
     latest_news = News.objects.filter(is_featured=False).order_by('-published_date')[:4]
@@ -189,7 +120,11 @@ def video_section(request):
     
 def artist_profile(request, artist_id):
     artist = get_object_or_404(Artist, id=artist_id)
-    songs =Song.objects.filter(artist=artist).order_by('-views')[:10]
+    
+    artist_monthly_listeners = artist.monthly_listeners  # Assuming `monthly_listeners` is a field in the Artist model
+    songs = Song.objects.filter(artist=artist)[:10]  # Sorting songs by Spotify popularity
+    
+    
     if request.method == 'POST' and 'song_id' in request.POST:
         song = get_object_or_404(Song , pk=request.POST['song_id'])
         song.views += 1
@@ -199,6 +134,7 @@ def artist_profile(request, artist_id):
     videos=Video.objects.filter(artist=artist).order_by('-created_at') 
     return render(request, 'artist_profile.html', {
         'artist': artist,
+        'artist_monthly_listeners': artist_monthly_listeners,
         'albums': albums,
         'songs': songs,
         'videos':videos ,
@@ -227,6 +163,7 @@ def song_details(request, song_id):
     artist = song.artist
     artist.views += 1
     artist.save()
+    
     
     # Retrieve the lyrics for the song
     lyrics = song.lyric_lines.order_by('timestamp')
@@ -309,8 +246,8 @@ def chart_section(request):
     if start_date and type_filter in ['song', 'album']:
         queryset = queryset.filter(release_date__gte=start_date)
 
-    # Order by views and limit to top 10
-    queryset = queryset.order_by('-views')[:10]
+    # Order by views and limit to top 100
+    queryset = queryset.order_by('-views')[:100]
 
     # Build the results and chart data
     for item in queryset:
