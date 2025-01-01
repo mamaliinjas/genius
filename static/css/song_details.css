@@ -1,86 +1,160 @@
-/* General Reset */
-* {
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    background-color: #f5f5f5;
+    /* Neutral background for the overall page */
+    color: #333;
 }
 
-.background {
-    width: 100%;
-    height: 50vh;
-    z-index: -1;
-    position: absolute;
+header {
+    background-color: #111;
+    color: white;
+    padding: 10px 20px;
+    position: sticky;
     top: 0;
+    z-index: 1000;
 }
 
-.song-details {
+.song-details-container {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 20px;
-    position: relative;
-    z-index: 1;
+    flex-direction: column;
+    gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
-    right: -35%;
 }
 
-.song-description-container {
-    flex-grow: 1;
-    margin-right: 30px;
-    position: relative;
-    top: 40px;
-    font-family: Arial, Helvetica, sans-serif;
-    padding-left: 90px;
-    max-width: 300px;
-    flex-shrink: 0;
-}
-
-.song-title {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    word-wrap: break-word;
-    line-height: 1.4;
-}
-
-.song-artist {
-    font-size: 1.2em;
-}
-
-.song-description {
-    font-size: 1em;
-    line-height: 1.6;
-}
-
-.song-cover-container {
-    width: 300px;
-    height: 300px;
-    position: relative;
-    top: 40px;
-    flex-shrink: 0;
+/* Song Info Section */
+.song-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-color: var(--dominant-color, #1c1c1c);
+    /* Replace with dominant color */
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .song-cover {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 200px;
+    height: auto;
     border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.song-lyrics-section {
-    margin: 20px;
+.song-info h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.song-info h2 {
+    font-size: 1.5rem;
+    margin: 0 0 10px 0;
+    color: #ddd;
+}
+
+.song-info p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+/* Lyrics Section */
+.lyrics-meaning-container {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    /* Ensures the meaning box is aligned properly */
+}
+
+/* Adjust Lyrics Section */
+.lyrics-section {
+    flex: 2;
+    /* Take up 2/3 of the space */
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .lyrics-container {
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.lyrics {
-    font-size: 1.1em;
-    text-align: right;
-    direction: rtl;
-    /* For Persian text */
+.lyrics-container h2 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #444;
+}
+
+.lyric-line {
+    font-size: 1rem;
     line-height: 1.6;
+    cursor: text;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+.lyric-line.highlight {
+    background-color: #fdf2d3;
+    cursor: pointer;
+    color: #333;
+    border-radius: 5px;
+    padding: 2px 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.lyric-line.highlight:hover {
+    background-color: #ffe59c;
+    color: #000;
+}
+
+
+/* Adjust Meaning Display */
+.lyric-meaning-display {
+    position: absolute;
+    /* Align relative to the lyrics container */
+    right: 10px;
+    /* Add spacing from the right edge */
+    top: 20px;
+    /* Align at the top */
+    width: 300px;
+    /* Fixed width for the meaning box */
+    max-height: 400px;
+    /* Prevent overflow */
+    overflow-y: auto;
+    /* Add scroll if content exceeds the height */
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    /* Ensure it's above other elements */
+    display: none;
+    /* Hidden by default */
+}
+
+/* Display the meaning box when active */
+.lyric-meaning-display.active {
+    display: block;
+}
+
+/* Hidden state for fallback */
+.hidden {
+    display: none;
+}
+
+
+
+
+/* Adjustments for Pointer */
+.lyric-line.highlight {
+    cursor: pointer;
+    /* Change cursor for clickable lines */
 }

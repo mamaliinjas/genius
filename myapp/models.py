@@ -131,7 +131,6 @@ class Song(models.Model):
     artist=models.ForeignKey('Artist' , on_delete=models.CASCADE , related_name='songs')
     title=models.CharField(max_length=200)
     duration=models.DurationField()
-    lyrics = models.TextField(blank=True, null=True)
     album = models.ForeignKey('Album', on_delete=models.CASCADE, related_name='songs', blank=True, null=True)
     views=models.PositiveIntegerField(default=0)
     release_date=models.DateField(blank=True, null=True)
@@ -139,6 +138,23 @@ class Song(models.Model):
     song_cover= models.ImageField(upload_to='song_covers/', null=True, blank=True)    
     def __str__(self):
         return self.title
+    
+class LyricLine(models.Model):
+    song = models.ForeignKey(Song, on_delete=models.CASCADE, related_name='lyric_lines')
+    line_text = models.TextField()
+    is_highlighted = models.BooleanField(default=False, help_text="Set to True if the line has a meaning.")
+
+    def __str__(self):
+        return f"{self.song.title} - {self.line_text[:30]}"
+
+
+class LyricMeaning(models.Model):
+    lyric_lines = models.ManyToManyField(LyricLine, related_name='meanings', help_text="Select lyric lines for this meaning.")
+    meaning_text = models.TextField(help_text="Explanation or meaning of the selected lyrics.")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Meaning for: {', '.join(line.line_text[:20] for line in self.lyric_lines.all())}"    
     
     
 class News(models.Model):
@@ -163,10 +179,3 @@ class News(models.Model):
     def __st__(self):
         return self.title
     
-class LyricLine(models.Model):
-    song=models.ForeignKey(Song , on_delete=models.CASCADE ,related_name='lyric_lines')
-    line_text=models.TextField()
-    timestamp=models.TimeField(help_text="Time when the line starts in the song (HH:MM:SS)")
-    meaning=models.TextField(null=True , blank=True , help_text="Optional: Explanation or meaning of the lyric")
-    def __str__(self):
-        return f"{self.song.title} - {self.line_text[:30]}"

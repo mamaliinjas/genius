@@ -152,7 +152,7 @@ def album_details(request, album_id):
 
 
 def song_details(request, song_id):
-    song = get_object_or_404(Song, id=song_id)
+    song = get_object_or_404(Song.objects.prefetch_related('lyric_lines'), id=song_id)
     
     song.views += 1
     song.save()
@@ -162,7 +162,7 @@ def song_details(request, song_id):
     artist.save()
     
     
-    lyrics = song.lyric_lines.order_by('timestamp')
+    lyrics = song.lyric_lines.prefetch_related('meanings')
     
     dominant_color = (0, 0, 0)  # Default black color
 

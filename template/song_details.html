@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ song.title }} - Details</title>
     <link rel="stylesheet" href="{% static 'css/song_details.css' %}">
+    <script src="{% static 'js/lyric_interactions.js' %}" defer></script>
 </head>
 
 <body>
@@ -26,44 +26,25 @@
             <p>Views: {{ song.views }}</p>
         </div>
 
-
-        <div class="lyrics-section">
-            <h2>Lyrics</h2>
-            <div class="lyrics-container">
-                {% for line in lyrics %}
-                <div class="lyric-line-container">
-                    <p class="lyric-line" data-timestamp="{{ line.timestamp|date:'H:i:s' }}">
+        <!-- Lyrics Section -->
+        <div class="lyrics-meaning-container">
+            <div class="lyrics-section">
+                <h2>Lyrics</h2>
+                <div class="lyrics-container">
+                    {% for line in song.lyric_lines.all %}
+                    <p class="lyric-line {% if line.is_highlighted %}highlight{% endif %}"
+                        data-meaning="{{ line.meanings.first.meaning_text }}">
                         {{ line.line_text }}
                     </p>
-                    {% if line.meaning %}
-                    <p class="lyric-meaning">
-                        <em>Meaning:</em> {{ line.meaning }}
-                    </p>
-                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endfor %}
+            </div>
+            <div class="lyric-meaning-display hidden" id="lyric-meaning-display">
+                <h3>Meaning</h3>
+                <p id="lyric-meaning-text"></p>
             </div>
         </div>
     </div>
-
-
-    <script>
-        const audio = document.getElementById('song-audio');
-        const lyricLines = document.querySelectorAll('.lyric-line');
-
-        audio.addEventListener('timeupdate', () => {
-            const currentTime = audio.currentTime; // Current time in seconds
-            lyricLines.forEach(line => {
-                const timestamp = line.getAttribute('data-timestamp').split(':');
-                const lineTime = parseInt(timestamp[0]) * 3600 + parseInt(timestamp[1]) * 60 + parseFloat(timestamp[2]);
-                if (currentTime >= lineTime) {
-                    line.classList.add('highlight');
-                } else {
-                    line.classList.remove('highlight');
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>
