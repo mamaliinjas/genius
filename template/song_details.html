@@ -34,7 +34,7 @@
                     {% for line in song.lyric_lines.all %}
                     <p class="lyric-line {% if line.is_highlighted %}highlight{% endif %}"
                         data-meaning="{{ line.meanings.first.meaning_text }}">
-                        {{ line.line_text }}
+                        {{ line.line_text|linebreaksbr }}
                     </p>
                     {% endfor %}
                 </div>
