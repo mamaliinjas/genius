@@ -20,7 +20,12 @@ def get_artist_listeners(spotify_id):
 
 
 def update_spotify_views():
-    # Update artists' monthly listeners
+    # Loop through artists and update their monthly listeners from Spotify
     for artist in Artist.objects.exclude(spotify_id__isnull=True):
-        artist.monthly_listeners = get_artist_listeners(artist.spotify_id)
-        artist.save()
+        # Get the monthly listeners using the Spotify ID
+        monthly_listeners = get_artist_listeners(artist.spotify_id)
+        
+        # Only update if we successfully fetched the listeners
+        if monthly_listeners is not None:
+            artist.monthly_listeners = monthly_listeners
+            artist.save()

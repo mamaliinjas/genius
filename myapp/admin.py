@@ -1,19 +1,49 @@
 from django.contrib import admin
 from .models import Artist, Album, Song , News , Video ,LyricLine, LyricMeaning
-from myapp.spotify import update_spotify_views
+from .forms import ArtistAdminForm
+from .spotify import get_artist_listeners
 # Register your models here.
-def update_spotify_data(modeladmin, request, queryset):
-    # Call the function that updates all artist and song views
-    update_spotify_views()
 
 
 
 class ArtistAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'bio', 'aka', 'twitter','spotify_id' , 'soundcloud', 'spotify', 'instagram' , 'telegram' , 'youtube']
-    list_display = ['name', 'bio', 'profile_picture', 'aka' ,'spotify_id' ,'get_monthly_listeners', 'twitter', 'instagram', 'soundcloud', 'spotify' , 'telegram' , 'youtube']
+    search_fields = ['name', 'bio', 'aka', 'twitter', 'spotify_id', 'soundcloud', 'spotify', 'instagram', 'telegram', 'youtube']
+    list_display = ['name', 'bio', 'profile_picture', 'aka', 'spotify_id', 'get_monthly_listeners', 'twitter', 'instagram', 'soundcloud', 'spotify', 'telegram', 'youtube']
     list_filter = ['name']
-    actions = [update_spotify_data]
+    form = ArtistAdminForm
 
+    # Explicitly define the fields to be displayed in the form
+    fields = [
+        'name',
+        'bio',
+        'profile_picture',
+        'cover_picture',
+        'aka',
+        'spotify_id',
+        'monthly_listeners',
+        'views',
+        'genre',
+        'twitter',
+        'instagram',
+        'soundcloud',
+        'spotify',
+        'youtube',
+        'telegram',
+    ]
+
+    def save_model(self, request, obj, form, change):
+        """
+        Override the save_model method to update monthly listeners.
+        """
+        # Save the Artist object
+        super().save_model(request, obj, form, change)
+
+        # Fetch and update monthly listeners if Spotify ID is provided
+        if obj.spotify_id:
+            listeners = get_artist_listeners(obj.spotify_id)
+            if listeners is not None:
+                obj.monthly_listeners = listeners
+                obj.save()
 class AlbumAdmin(admin.ModelAdmin):
     search_fields = ['title', 'artist__name']
     list_display = ['title', 'release_date', 'artist']

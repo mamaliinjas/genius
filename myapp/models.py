@@ -70,8 +70,8 @@ class Artist(models.Model):
     profile_picture = models.ImageField(upload_to='artist_profiles/')
     cover_picture = models.ImageField(upload_to='artist_covers/', null=True, blank=True)
     aka = models.CharField(max_length=200, null=True, blank=True)
-    spotify_id=models.CharField(max_length=250 , null=True ,  blank=True)
-    monthly_listeners = models.IntegerField(default=0)
+    spotify_id = models.CharField(max_length=255, null=True, blank=True)
+    monthly_listeners = models.IntegerField(null=True, blank=True)
     views = models.PositiveBigIntegerField(default=0)
     genre = models.CharField(max_length=20, choices=GENRE_CHOICES, null=True, blank=True)
     crop_coords = models.CharField(
