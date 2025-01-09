@@ -18,6 +18,7 @@ class ArtistAdmin(admin.ModelAdmin):
         'bio',
         'profile_picture',
         'cover_picture',
+        'crop_coords',
         'aka',
         'spotify_id',
         'monthly_listeners',
@@ -29,7 +30,6 @@ class ArtistAdmin(admin.ModelAdmin):
         'spotify',
         'youtube',
         'telegram',
-        'crop_coords',
     ]
 
     def save_model(self, request, obj, form, change):
