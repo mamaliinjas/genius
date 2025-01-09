@@ -29,6 +29,7 @@ class ArtistAdmin(admin.ModelAdmin):
         'spotify',
         'youtube',
         'telegram',
+        'crop_coords',
     ]
 
     def save_model(self, request, obj, form, change):
