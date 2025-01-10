@@ -1,18 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const lyricLines = document.querySelectorAll('.lyric-line');
-    const meaningDisplay = document.getElementById('lyric-meaning-display');
-    const meaningText = document.getElementById('lyric-meaning-text');
+    const lyricsContainer = document.querySelector('.lyrics-container');
+    const meaningDisplay = document.querySelector('#lyric-meaning-display');
+    const meaningText = document.querySelector('#lyric-meaning-text');
 
-    lyricLines.forEach(line => {
-        line.addEventListener('click', () => {
-            const meaning = line.getAttribute('data-meaning');
-            if (meaning) {
-                meaningText.textContent = meaning;
-                meaningDisplay.classList.remove('hidden');
-            } else {
-                meaningText.textContent = "No meaning available for this line.";
-                meaningDisplay.classList.remove('hidden');
+    if (lyricsContainer) {
+        lyricsContainer.addEventListener('click', (e) => {
+            // Ensure the clicked element is a highlighted line
+            if (e.target.classList.contains('highlight')) {
+                const meaning = e.target.getAttribute('data-meaning');
+                if (meaning) {
+                    // Update the meaning box content
+                    meaningText.textContent = meaning;
+
+                    // Show the meaning display
+                    meaningDisplay.classList.remove('hidden');
+                    meaningDisplay.classList.add('active');
+                }
             }
         });
-    });
+    }
 });

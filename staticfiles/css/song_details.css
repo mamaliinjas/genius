@@ -66,10 +66,14 @@ header {
 .lyrics-meaning-container {
     display: flex;
     gap: 20px;
+    position: relative;
+    /* Ensures the meaning box is aligned properly */
 }
 
+/* Adjust Lyrics Section */
 .lyrics-section {
     flex: 2;
+    /* Take up 2/3 of the space */
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
@@ -110,37 +114,44 @@ header {
     color: #000;
 }
 
-/* Meaning Section */
+
+/* Adjust Meaning Display */
 .lyric-meaning-display {
-    flex: 1;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    /* Align relative to the lyrics container */
+    right: 10px;
+    /* Add spacing from the right edge */
+    top: 20px;
+    /* Align at the top */
+    width: 300px;
+    /* Fixed width for the meaning box */
+    max-height: 400px;
+    /* Prevent overflow */
+    overflow-y: auto;
+    /* Add scroll if content exceeds the height */
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    /* Ensure it's above other elements */
     display: none;
     /* Hidden by default */
 }
 
-.lyric-meaning-display h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #444;
-}
-
-.lyric-meaning-display p {
-    font-size: 1rem;
-    color: #666;
-}
-
-/* Show meaning display when active */
-.lyric-meaning-display.hidden {
-    display: none;
-}
-
+/* Display the meaning box when active */
 .lyric-meaning-display.active {
     display: block;
 }
+
+/* Hidden state for fallback */
+.hidden {
+    display: none;
+}
+
+
+
 
 /* Adjustments for Pointer */
 .lyric-line.highlight {
