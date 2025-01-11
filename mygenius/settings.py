@@ -127,8 +127,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+hostname = socket.gethostname()
+if hostname == 'srv5733729426':
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = '/srv/mygenius/genius/media'
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
