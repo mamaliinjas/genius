@@ -12,3 +12,6 @@ db.sqlite3
 *.pyc
 .cache
 .env
+.DS_Store
+venv/.DS_Store
+venv/lib/python3.12/site-packages/.DS_Store
