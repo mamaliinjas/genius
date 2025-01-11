@@ -15,3 +15,5 @@ db.sqlite3
 .DS_Store
 venv/.DS_Store
 venv/lib/python3.12/site-packages/.DS_Store
+venv/venv/
+venv/
