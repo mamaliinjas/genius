@@ -72,6 +72,7 @@ class Artist(models.Model):
     aka = models.CharField(max_length=200, null=True, blank=True)
     spotify_id = models.CharField(max_length=255, null=True, blank=True)
     monthly_listeners = models.IntegerField(null=True, blank=True)
+    total_views = models.IntegerField(default=0)
     views = models.PositiveBigIntegerField(default=0)
     genre = models.CharField(max_length=20, choices=GENRE_CHOICES, null=True, blank=True)
     crop_coords = models.CharField(

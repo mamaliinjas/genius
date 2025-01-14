@@ -15,6 +15,7 @@ from django.urls import reverse
 from rest_framework import viewsets
 from rest_framework.response import Response
 from .serializers import ArtistSerializer , AlbumSerializer , SongSerializer
+from django.core.paginator import Paginator
 # Create your views here.
 
     
@@ -122,26 +123,41 @@ def video_section(request):
     
     
 def artist_profile(request, artist_id):
+    # Get the artist or return a 404 if not found
     artist = get_object_or_404(Artist, id=artist_id)
     
-    artist_monthly_listeners = artist.monthly_listeners  # Assuming `monthly_listeners` is a field in the Artist model
-    songs = Song.objects.filter(artist=artist)[:10]  # Sorting songs by Spotify popularity
+    # Increment the artist's profile views
+    artist.views += 1
+    artist.save()
     
+    # Calculate the total views of all the artist's songs
+    song_views = Song.objects.filter(artist=artist).aggregate(total_views=Sum('views'))['total_views'] or 0
+
+    # Update the artist's total views (profile views + song views)
+    artist.total_views = artist.views + song_views
+    artist.save(update_fields=['total_views'])
     
+    # Fetch additional data for rendering
+    artist_monthly_listeners = artist.monthly_listeners  # Monthly listeners field
+    songs = Song.objects.filter(artist=artist).order_by('-views')[:10]  # Fetch top 10 songs by views
+    albums = artist.albums.all().order_by('-release_date')  # Fetch all albums, newest first
+    videos = Video.objects.filter(artist=artist).order_by('-created_at')  # Fetch artist's videos
+
+    # Handle song view increment if a POST request is made
     if request.method == 'POST' and 'song_id' in request.POST:
-        song = get_object_or_404(Song , pk=request.POST['song_id'])
+        song = get_object_or_404(Song, pk=request.POST['song_id'])
         song.views += 1
         song.save()
-    albums = artist.albums.all().order_by('-release_date') 
-    
-    videos=Video.objects.filter(artist=artist).order_by('-created_at') 
+
+    # Render the artist profile template
     return render(request, 'artist_profile.html', {
         'artist': artist,
         'artist_monthly_listeners': artist_monthly_listeners,
         'albums': albums,
         'songs': songs,
-        'videos':videos ,
-        })
+        'videos': videos,
+    })
+     
 
 
 def album_details(request, album_id):
@@ -208,9 +224,10 @@ def chart_section(request):
     type_filter = request.GET.get('type', 'song')
     genre_filter = request.GET.get('genre', 'all')
     time_filter = request.GET.get('time', 'all')
+    page = int(request.GET.get('page', 1))
 
     # Data structure to store results
-    data = {'results': [], 'chart_data': {'labels': [], 'values': [], 'images': []}}
+    data = {'results': [], 'has_more': False}
 
     today = date.today()
 
@@ -231,58 +248,50 @@ def chart_section(request):
         queryset = Album.objects.all()
     elif type_filter == 'artist':
         queryset = Artist.objects.all()
-    elif type_filter == 'lyric':
-        queryset = Song.objects.filter(lyrics__isnull=False)
     else:
-        return JsonResponse({'error': 'invalid type filter'}, status=400)
+        return JsonResponse({'error': 'Invalid type filter'}, status=400)
 
     # Handle genre filtering
-    if genre_filter != 'all' and type_filter in ['song', 'album' , 'artist' , 'lyric']:
+    if genre_filter != 'all' and type_filter in ['song', 'album', 'lyric']:
         queryset = queryset.filter(genre=genre_filter)
 
     # Handle date filtering
     if start_date and type_filter in ['song', 'album']:
         queryset = queryset.filter(release_date__gte=start_date)
 
-    # Order by views and limit to top 100
-    queryset = queryset.order_by('-views')[:100]
+    # Order by views
+    queryset = queryset.order_by('-views')
 
-    # Build the results and chart data
-    for item in queryset:
+    # Paginate results (10 items per page)
+    paginator = Paginator(queryset, 10)
+    current_page = paginator.get_page(page)
+    data['has_more'] = current_page.has_next()
+
+    # Build the results
+    for item in current_page:
         if type_filter == 'song':
             data['results'].append({
                 'id': item.id,
                 'title': item.title,
                 'artist': item.artist.name,
                 'views': item.views,
-                'image': item.song_cover.url if item.song_cover else None
+                'image': item.song_cover.url if item.song_cover else None,
             })
-            data['chart_data']['labels'].append(item.title)
-            data['chart_data']['values'].append(item.views)
-            data['chart_data']['images'].append(item.song_cover.url if item.song_cover else None)
-
         elif type_filter == 'album':
             data['results'].append({
                 'id': item.id,
                 'title': item.title,
                 'artist': item.artist.name,
                 'views': item.views,
-                'image': item.cover_photo.url if item.cover_photo else None
+                'image': item.cover_photo.url if item.cover_photo else None,
             })
-            data['chart_data']['labels'].append(item.title)
-            data['chart_data']['values'].append(item.views)
-            data['chart_data']['images'].append(item.cover_photo.url if item.cover_photo else None)
-
         elif type_filter == 'artist':
             data['results'].append({
                 'id': item.id,
                 'name': item.name,
                 'views': item.views,
-                'image': item.profile_picture.url if item.profile_picture else None
+                'image': item.profile_picture.url if item.profile_picture else None,
             })
-            data['chart_data']['labels'].append(item.name)
-            data['chart_data']['values'].append(item.views)
-            data['chart_data']['images'].append(item.profile_picture.url if item.profile_picture else None)
 
     return JsonResponse(data)
 
