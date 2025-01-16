@@ -146,9 +146,9 @@ else:
 # Optional: Define the directory for static files
 # settings.py
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static'),  
+#]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
