@@ -1,3 +1,10 @@
+/* Filter Section Styling */
+.filter-section {
+    margin-left: 50px;
+    margin-top: 20px;
+    position: relative;
+}
+
 /* Filter Button */
 .filter-button {
     background-color: #f9f9f9;
@@ -8,7 +15,6 @@
     cursor: pointer;
     border-radius: 5px;
     display: inline-block;
-    margin: 10px 0;
     width: fit-content;
     margin-left: 60px;
     border: 1px solid #ddd;
@@ -22,69 +28,56 @@
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    margin-top: 0px;
+    margin-top: 10px;
     padding: 11px;
     gap: 15px;
     max-width: 300px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-left: 50px;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0s 0.3s;
 }
 
-.hidden {
-    display: none;
+.filter-dropdown.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out;
 }
 
-.filter-column {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+/* Chart Section Styling */
+#chart-section {
+    margin-top: 30px;
+    position: relative;
 }
 
-/* Chart Title */
-.chart-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
+#show-more-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
     color: #333;
-    margin-bottom: 0px;
-}
-
-
-.filter-column h4 {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.filter-column ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.filter-column ul li {
-    padding: 5px 10px;
     cursor: pointer;
-    border-radius: 3px;
-    transition: background-color 0.3s;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2
 }
 
-.filter-column ul li:hover {
-    background-color: #ddd;
-}
-
-
-/* Chart Item - Compact Layout */
+/* Chart Item Styling */
 .chart-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    /* Tighter spacing */
-    border-bottom: 1px solid #ddd;
-    /* Separate rows clearly */
     gap: 20px;
-    /* Reduce gaps */
+    /* Adjust spacing */
+    border-bottom: 1px solid #ddd;
     cursor: pointer;
     font-family: Arial, sans-serif;
     transition: background-color 0.2s ease-in-out;
@@ -92,12 +85,11 @@
 
 .chart-item:hover {
     background-color: #f5f5f5;
-    /* Add hover effect */
 }
 
+/* Chart Elements */
 .chart-rank {
     width: 40px;
-    /* Standard width for rank */
     text-align: center;
     font-weight: bold;
     font-size: 1rem;
@@ -105,18 +97,17 @@
 
 .chart-image {
     width: 50px;
-    /* Reduce size for compact design */
     height: 50px;
     object-fit: cover;
     margin-right: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
-    /* Add a subtle border */
 }
 
 .chart-song {
     flex: 3;
-    /* Adjust flex to prioritize song title space */
+    flex-shrink: 0;
+    /* Prevent shrinking */
     font-weight: bold;
     color: #333;
     white-space: nowrap;
@@ -124,9 +115,16 @@
     text-overflow: ellipsis;
 }
 
+.chart-title {
+    font-size: 4.9rem;
+    text-align: center;
+
+}
+
 .chart-artist {
     flex: 2;
-    /* Give artist more space for readability */
+    flex-shrink: 0;
+    /* Prevent shrinking */
     color: #666;
     font-size: 0.9rem;
     text-align: left;
@@ -142,13 +140,58 @@
     text-align: right;
 }
 
-/* Adjust container padding for better alignment */
+/* Chart Container Styling */
 .chart-container {
     margin-top: 20px;
     padding: 10px;
 }
 
-/* Make the chart container more compact */
 #chart-results {
     padding: 5px;
+}
+
+/* Song Title and Artist Name Styling */
+.song-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 5px 0;
+}
+
+.artist-name {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #666;
+    margin: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+
+#show-more-button {
+    display: block;
+    margin: 20px auto;
+    /* Centers the button horizontally */
+    padding: 10px 20px;
+    /* Adds padding for better usability */
+    background-color: #007bff;
+    /* Button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#show-more-button:hover {
+    background-color: #0056b3;
+    /* Darker shade on hover */
+}
+
+#show-more-button.hidden {
+    display: none;
+    /* Keeps the hidden class functional */
 }

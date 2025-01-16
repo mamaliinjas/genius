@@ -20,14 +20,16 @@
 <body>
     <!-- Include Navbar -->
     {% include 'navbar.html' %}
+
     <!-- News Section -->
     <div id="news_section">
         {% include 'news_section.html' %}
     </div>
 
-    <!-- Chart Filters -->
-    <div id="chart-section">
-        <h1 class="chart-title">CHARTS</h1>
+    <h1 class="chart-title">CHARTS</h1>
+
+    <!-- Filter Section -->
+    <div id="filter-section" class="filter-section">
         <div id="filter-button" class="filter-button">
             SONGS / ALL GENRES / TODAY
         </div>
@@ -64,11 +66,13 @@
         </div>
     </div>
 
-    <!-- Chart Results -->
-    <div id="chart-results" class="chart-container"></div>
-    <button id="show-more-button" class="hidden">Show More</button>
+    <!-- Chart Section -->
+    <div id="chart-section">
+        <div id="chart-results" class="chart-container"></div>
+        <button id="show-more-button" class="hidden">Show More</button>
+    </div>
 
-
+    <!-- Video Section -->
     <div id="video-section" class="video-section">
         <h2>VIDEOS</h2>
         <div class="video-preview-container">

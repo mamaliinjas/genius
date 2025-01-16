@@ -224,7 +224,8 @@ def chart_section(request):
     type_filter = request.GET.get('type', 'song')
     genre_filter = request.GET.get('genre', 'all')
     time_filter = request.GET.get('time', 'all')
-    page = int(request.GET.get('page', 1))
+    page = int(request.GET.get('page', 1))  # Current page
+    per_page = 10  # Number of items per page
 
     # Data structure to store results
     data = {'results': [], 'has_more': False}
@@ -241,7 +242,7 @@ def chart_section(request):
     else:
         start_date = None
 
-    # Handle type filtering (song, album, artist, lyric)
+    # Handle type filtering (song, album, artist)
     if type_filter == 'song':
         queryset = Song.objects.all()
     elif type_filter == 'album':
@@ -252,7 +253,7 @@ def chart_section(request):
         return JsonResponse({'error': 'Invalid type filter'}, status=400)
 
     # Handle genre filtering
-    if genre_filter != 'all' and type_filter in ['song', 'album', 'lyric']:
+    if genre_filter != 'all' and type_filter in ['song', 'album']:
         queryset = queryset.filter(genre=genre_filter)
 
     # Handle date filtering
@@ -262,9 +263,12 @@ def chart_section(request):
     # Order by views
     queryset = queryset.order_by('-views')
 
-    # Paginate results (10 items per page)
-    paginator = Paginator(queryset, 10)
-    current_page = paginator.get_page(page)
+    # Paginate results
+    paginator = Paginator(queryset, per_page)
+    if page > paginator.num_pages:
+        return JsonResponse(data)  # Return empty results if the page exceeds available data
+
+    current_page = paginator.page(page)
     data['has_more'] = current_page.has_next()
 
     # Build the results
