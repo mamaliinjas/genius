@@ -136,8 +136,12 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+if hostname == 'srv5733729426':
+    STATIC_URL = '/static/'
+    STATIC_ROOT = '/srv/mygenius/genius/staticfiles'  # Change this to your production path
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Optional: Define the directory for static files
 # settings.py
