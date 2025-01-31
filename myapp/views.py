@@ -297,12 +297,7 @@ def chart_section(request):
             })
 
 
-    response = JsonResponse(data)
-    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'  # Prevents caching
-    response['Pragma'] = 'no-cache'  # HTTP 1.0 support
-    response['Expires'] = '0'
-    
-    return response
+    return JsonResponse(data)
 
 class ArtistViewSet(viewsets.ModelViewSet):
     queryset = Artist.objects.all()
