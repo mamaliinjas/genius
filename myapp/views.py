@@ -176,9 +176,9 @@ def song_details(request, song_id):
     song.views += 1
     song.save()
     
-    artist = song.artist
-    artist.views += 1
-    artist.save()
+    for artist in song.artists.all():
+        artist.views += 1
+        artist.save()
     
     
     lyrics = song.lyric_lines.prefetch_related('meanings')
