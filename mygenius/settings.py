@@ -136,19 +136,15 @@ else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Static files (CSS, JavaScript, Images)
-if hostname == 'srv5733729426':
-    STATIC_URL = '/static/'
-    STATIC_ROOT = '/srv/mygenius/genius/staticfiles'  # Change this to your production path
-else:
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'  # URL to access static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
 # Optional: Define the directory for static files
 # settings.py
 
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static'),  
-#]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Points to the 'static' folder inside your project directory
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

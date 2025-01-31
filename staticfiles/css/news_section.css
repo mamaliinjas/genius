@@ -11,9 +11,10 @@ body {
     padding: 20px;
 }
 
-h1 {
+.news-container h1 {
     text-align: center;
     margin-bottom: 30px;
+    font-size: 4.5rem;
 }
 
 .top-news {

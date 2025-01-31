@@ -1,3 +1,10 @@
+/* Filter Section Styling */
+.filter-section {
+    margin-left: 50px;
+    margin-top: 20px;
+    position: relative;
+}
+
 /* Filter Button */
 .filter-button {
     background-color: #f9f9f9;
@@ -8,7 +15,6 @@
     cursor: pointer;
     border-radius: 5px;
     display: inline-block;
-    margin: 10px 0;
     width: fit-content;
     margin-left: 60px;
     border: 1px solid #ddd;
@@ -22,12 +28,11 @@
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    margin-top: 0px;
+    margin-top: 10px;
     padding: 11px;
     gap: 15px;
     max-width: 300px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-left: 50px;
 }
 
 .hidden {
@@ -42,7 +47,7 @@
 
 /* Chart Title */
 .chart-title {
-    font-size: 4.5rem;
+    font-size: 4.9rem;
     font-weight: bold;
     text-align: center;
     color: #333;
@@ -151,4 +156,44 @@
 /* Make the chart container more compact */
 #chart-results {
     padding: 5px;
+}
+
+#show-more-button {
+    display: block;
+    margin: 20px auto;
+    /* Centers the button horizontally */
+    padding: 10px 20px;
+    /* Adds padding for better usability */
+    background-color: #007bff;
+    /* Button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#show-more-button:hover {
+    background-color: #0056b3;
+    /* Darker shade on hover */
+}
+
+#show-more-button.hidden {
+    display: none;
+    /* Keeps the hidden class functional */
+}
+
+.song-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 5px 0;
+}
+
+.artist-name {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #666;
+    margin: 0;
 }
