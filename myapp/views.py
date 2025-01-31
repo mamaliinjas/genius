@@ -131,7 +131,7 @@ def artist_profile(request, artist_id):
     artist.save()
     
     # Calculate the total views of all the artist's songs
-    song_views = Song.objects.filter(artist=artist).aggregate(total_views=Sum('views'))['total_views'] or 0
+    song_views = Song.objects.filter(artists=artist).aggregate(total_views=Sum('views'))['total_views'] or 0
 
     # Update the artist's total views (profile views + song views)
     artist.total_views = artist.views + song_views
@@ -139,7 +139,7 @@ def artist_profile(request, artist_id):
     
     # Fetch additional data for rendering
     artist_monthly_listeners = artist.monthly_listeners  # Monthly listeners field
-    songs = Song.objects.filter(artist=artist).order_by('-views')[:10]  # Fetch top 10 songs by views
+    songs = Song.objects.filter(artists=artist).order_by('-views')[:10]  # Fetch top 10 songs by views
     albums = artist.albums.all().order_by('-release_date')  # Fetch all albums, newest first
     videos = Video.objects.filter(artist=artist).order_by('-created_at')  # Fetch artist's videos
 
