@@ -276,7 +276,7 @@ def chart_section(request):
             data['results'].append({
                 'id': item.id,
                 'title': item.title,
-                'artist': item.artist.name,
+                'artist': ', '.join([artist.name for artist in item.artists.all()]),
                 'views': item.views,
                 'image': item.song_cover.url if item.song_cover else None,
             })
