@@ -125,11 +125,11 @@ class Album(models.Model):
     genre=models.CharField(max_length=20 , choices=GENRE_CHOICES , null=True , blank=True)
       
     def __str__(self):
-          return self.title
+        return self.title
       
     
 class Song(models.Model):
-    artist=models.ForeignKey('Artist' , on_delete=models.CASCADE , related_name='songs')
+    artists = models.ManyToManyField('Artist', related_name='songs')
     title=models.CharField(max_length=200)
     duration=models.DurationField()
     album = models.ForeignKey('Album', on_delete=models.CASCADE, related_name='songs', blank=True, null=True)

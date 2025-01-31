@@ -51,11 +51,13 @@ class AlbumAdmin(admin.ModelAdmin):
     list_filter = ['release_date', 'artist']
 
 class SongAdmin(admin.ModelAdmin):
-    search_fields = ['title', 'artist__name']
-    list_display = ['title', 'duration', 'artist' ]
-    list_filter = ['artist']    
+    list_display = ('title', 'get_artists', 'duration', 'views', 'release_date')
+    list_filter = ('artists',)   
     
-    
+
+    def get_artists(self, obj):
+        return ", ".join([artist.name for artist in obj.artists.all()])
+    get_artists.short_description = 'Artists' 
 
 class NewsAdmin(admin.ModelAdmin):
     list_display=['title' , 'is_featured' , 'published_date']
