@@ -137,7 +137,7 @@ else:
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'  # URL to access static files
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+STATIC_ROOT = '/srv/mygenius/genius/staticfiles' 
 
 # Optional: Define the directory for static files
 # settings.py

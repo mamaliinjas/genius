@@ -99,6 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
             currentRank = 1; // Reset rank
             fetchChartData(); // Fetch updated data
         }
+
+        if (currentPage === 1) {
+            chartResultsContainer.innerHTML = ""; // Clear results on the first page
+        }
     });
 
     // Initial fetch

@@ -220,19 +220,18 @@ def news_detail(request , news_id ):
     return render(request , 'news_detail.html' , { 'news' : news })
 
 def chart_section(request):
-    # Get filters from query parameters
     type_filter = request.GET.get('type', 'song')
     genre_filter = request.GET.get('genre', 'all')
     time_filter = request.GET.get('time', 'all')
-    page = int(request.GET.get('page', 1))  # Current page
-    per_page = 10  # Number of items per page
+    page = int(request.GET.get('page', 1))
+    per_page = 10
 
-    # Data structure to store results
+
     data = {'results': [], 'has_more': False}
 
     today = date.today()
 
-    # Handle time filtering (day, week, month)
+
     if time_filter == 'day':
         start_date = today - timedelta(days=1)
     elif time_filter == 'week':
@@ -297,7 +296,13 @@ def chart_section(request):
                 'image': item.profile_picture.url if item.profile_picture else None,
             })
 
-    return JsonResponse(data)
+
+    response = JsonResponse(data)
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'  # Prevents caching
+    response['Pragma'] = 'no-cache'  # HTTP 1.0 support
+    response['Expires'] = '0'
+    
+    return response
 
 class ArtistViewSet(viewsets.ModelViewSet):
     queryset = Artist.objects.all()
