@@ -1,21 +1,23 @@
-
 from pathlib import Path
 import os
-import socket
+import environ
+
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+DJANGO_ENV = env('DJANGO_ENV', default='development')
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+SECRET_KEY =env('SECRET_KEY')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ch0r=))%vud66p10vj%r98lgjtx!j79%x@pks$_9pjuv%4q=(d'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['194.5.205.18', 'localhost', '127.0.0.1', 'ra-dif.com', 'www.ra-dif.com']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['ra-dif.com', 'www.ra-dif.com'])
 
 
 # Application definition
@@ -78,17 +80,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mygenius.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myradifdb',
-        'USER': 'myradifuser',
-        'PASSWORD': 'myradifpassword',
-        'HOST': 'localhost',
-        'PORT': '5432', 
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
 
@@ -127,17 +128,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-hostname = socket.gethostname()
-if hostname == 'srv5733729426':
-    MEDIA_URL = '/media/'
+# Media Files
+if os.environ.get('DJANGO_ENV') == 'production':
     MEDIA_ROOT = '/srv/mygenius/genius/media'
 else:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_ROOT = BASE_DIR / 'media'
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'  # URL to access static files
-STATIC_ROOT = '/srv/mygenius/genius/staticfiles' 
+MEDIA_URL = '/media/'
+
+# Static Files
+if os.environ.get('DJANGO_ENV') == 'production':
+    STATIC_ROOT = '/srv/mygenius/genius/staticfiles'
+else:
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATIC_URL = '/static/' 
 
 # Optional: Define the directory for static files
 # settings.py
@@ -151,18 +156,16 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Use the database for session storage
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Database-backed sessions
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=True)
 
-# Optionally, set a session cookie age (default is 300 seconds)
-SESSION_COOKIE_AGE = 3600  # 1 hour in seconds
 
-# Set the session cookie name (default is 'sessionid')
-SESSION_COOKIE_NAME = 'my_session_cookie'
-
-# Session cookie will be set only on secure connections
-SESSION_COOKIE_SECURE = True  # Use this for HTTPS
-
-SPOTIPY_CLIENT_ID = '82b8a20a9bfb48b0a2eaf86682819151'
-SPOTIPY_CLIENT_SECRET = '7d4a43b5a12b4dfb99067e1e88a6e824'
-SPOTIPY_REDIRECT_URI = 'https://ra-dif.com/spotify/callback'
+SPOTIPY_CLIENT_ID = env('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = env('SPOTIPY_CLIENT_SECRET')
+SPOTIPY_REDIRECT_URI = env('SPOTIPY_REDIRECT_URI')
