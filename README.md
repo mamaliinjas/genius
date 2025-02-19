@@ -1,0 +1,1 @@
+so this repository is my main project with my team , working on some website that look like as genius.com , it have latest news , lyrics , songs, artists, genres , and meaning of lyrics , chart , so i hope you enjoy it.
